@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bob, the Building Pro</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <div class="hero-badge">AI App Builder</div>
+      <h1>Bob, the Building Pro</h1>
+      <p class="hero-tagline">Describe your app idea. Get a complete builder prompt for your AI agent.</p>
+    </header>
+
+    <!-- Global Progress Bar -->
+    <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Wizard progress">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <!-- Step Indicator Pills -->
+    <nav class="step-pills" id="step-pills" aria-label="Wizard steps">
+      <button type="button" class="step-pill" data-goto="0" aria-label="Welcome">Welcome</button>
+      <button type="button" class="step-pill" data-goto="1" aria-label="Core Identity">Identity</button>
+      <button type="button" class="step-pill" data-goto="2" aria-label="Source & Legal">Source</button>
+      <button type="button" class="step-pill" data-goto="3" aria-label="Platform">Platform</button>
+      <button type="button" class="step-pill" data-goto="4" aria-label="Features">Features</button>
+      <button type="button" class="step-pill" data-goto="5" aria-label="Modules">Modules</button>
+      <button type="button" class="step-pill" data-goto="6" aria-label="Design">Design</button>
+      <button type="button" class="step-pill" data-goto="7" aria-label="Constraints">Constraints</button>
+      <button type="button" class="step-pill" data-goto="8" aria-label="Review">Review</button>
+    </nav>
+
+    <!-- Loading indicator (shown while full-script.txt loads) -->
+    <div id="loading-bar" class="loading-bar" style="display:none;">
+      <div class="loading-bar-fill"></div>
+    </div>
+
+    <main id="wizard" class="wizard" aria-live="polite" aria-atomic="true">
+
+      <form id="builder-form" novalidate>
+
+        <!-- Step 0: Welcome / Mode Selection -->
+        <section class="block" id="block-0" data-step="0">
+          <div class="welcome-header">
+            <h2>How would you like to start?</h2>
+            <p class="welcome-description">Choose the path that matches your experience level. You can always switch modes later.</p>
+          </div>
+          
+          <div class="mode-cards">
+            <button type="button" data-action="start-katie" class="mode-card mode-card--primary">
+              <div class="mode-card-icon">🐱</div>
+              <div class="mode-card-content">
+                <h3>Katie's Groove</h3>
+                <p class="mode-card-title">I'm brand new — walk me through it</p>
+                <p class="mode-card-desc">A friendly conversation that guides you step-by-step. No jargon, no pressure.</p>
+              </div>
+              <div class="mode-card-arrow">→</div>
+            </button>
+
+            <button type="button" data-action="set-mode" data-mode="need-help" class="mode-card">
+              <div class="mode-card-icon">🤝</div>
+              <div class="mode-card-content">
+                <h3>Guided Mode</h3>
+                <p class="mode-card-title">I could use some help</p>
+                <p class="mode-card-desc">Standard intake form with expanded guidance and examples for every field.</p>
+              </div>
+              <div class="mode-card-arrow">→</div>
+            </button>
+
+            <button type="button" data-action="set-mode" data-mode="got-this" class="mode-card">
+              <div class="mode-card-icon">✅</div>
+              <div class="mode-card-content">
+                <h3>Quick Mode</h3>
+                <p class="mode-card-title">I got this — brief hints</p>
+                <p class="mode-card-desc">Standard intake form with minimal guidance. For users who know what they're doing.</p>
+              </div>
+              <div class="mode-card-arrow">→</div>
+            </button>
+
+            <button type="button" data-action="go-expert" class="mode-card mode-card--expert">
+              <div class="mode-card-icon">🔴</div>
+              <div class="mode-card-content">
+                <h3>Expert Mode</h3>
+                <p class="mode-card-title">I have code or a spec</p>
+                <p class="mode-card-desc">Paste existing code or upload a file. Bob will analyze it and auto-fill the intake form.</p>
+              </div>
+              <div class="mode-card-arrow">→</div>
+            </button>
+          </div>
+        </section>
+
+        <!-- Katie's Groove: Beginner Conversational Intake -->
+        <section class="block" id="block-katie" data-step="10" style="display:none">
+          <div class="katie-header">
+            <h2>🐱 Katie's Groove</h2>
+            <p class="katie-subtitle">No jargon. No pressure. Just a conversation. I'll ask you simple questions and build your project intake from your answers.</p>
+            <div class="katie-progress">
+              <div class="katie-progress-fill" id="katie-progress-fill"></div>
+            </div>
+            <p class="katie-step-label" id="katie-step-label">Phase 1 of 11</p>
+          </div>
+
+          <div id="katie-conversation" class="katie-conversation">
+            <!-- Conversation bubbles render here -->
+          </div>
+
+          <div id="katie-input-area" class="katie-input-area">
+            <textarea id="katie-answer" class="katie-answer" rows="3" placeholder="Type your answer here..."></textarea>
+            <div class="katie-input-actions">
+              <button type="button" data-action="katie-skip" class="katie-skip-btn" id="katie-skip-btn">Skip →</button>
+              <button type="button" data-action="katie-submit" class="cta-btn katie-submit-btn" id="katie-submit-btn">Next →</button>
+            </div>
+            <div id="katie-suggestions" class="katie-suggestions"></div>
+          </div>
+
+          <div id="katie-done" class="katie-done" style="display:none">
+            <div class="katie-done-icon">🎉</div>
+            <h3>Your project intake is ready!</h3>
+            <p>I've translated your answers into a structured project intake. You can review everything on the next screen and tweak anything before generating your builder prompt.</p>
+            <div id="katie-summary" class="katie-summary"></div>
+            <button type="button" data-action="katie-finish" class="cta-btn">Review My Project →</button>
+          </div>
+        </section>
+
+        <!-- Step 1: Core Product Identity -->
+        <section class="block" id="block-1" data-step="1">
+          <h2>Block 1 — Core Product Identity</h2>
+
+          <label>Project Name <span class="hint">URL-friendly, lowercase, hyphens only</span></label>
+          <input type="text" id="projectName" placeholder="recipe-ai" required />
+
+          <label>Project Description <span class="hint">1–3 sentences</span></label>
+          <textarea id="projectDescription" rows="3" placeholder="A web app that lets..." required></textarea>
+          <div class="extra-help"><strong>What this means:</strong> Describe what your app does and who uses it. Example: "A web app for teachers to create quizzes from notes in under 30 seconds." Keep it to 1-3 short sentences.</div>
+
+          <label>Core User <span class="hint">One specific person</span></label>
+          <input type="text" id="coreUser" placeholder="Freelance graphic designers..." required />
+          <div class="extra-help"><strong>What this means:</strong> Don't say "everyone." Pick one real type of person: "Freelance writers managing 10 clients a month." The more specific, the better the result.</div>
+
+          <label>Core Problem <span class="hint">Specific pain and its cost</span></label>
+          <textarea id="coreProblem" rows="3" required></textarea>
+          <div class="extra-help"><strong>What this means:</strong> What hurts right now? Include time lost, money lost, or frustration. Example: "Builders spend 2 hours setting up apps manually and miss key features."</div>
+
+          <label>Core Action <span class="hint">Single primary action</span></label>
+          <input type="text" id="coreAction" placeholder="Generate a formatted invoice..." required />
+          <div class="extra-help"><strong>What this means:</strong> The one most important thing your user does. One verb. Not a list. Example: "Generate an app from a feature list and design notes."</div>
+
+          <label>Core Result <span class="hint">Concrete output</span></label>
+          <textarea id="coreResult" rows="3" required></textarea>
+          <div class="extra-help"><strong>What this means:</strong> After the action finishes, what does the user have? Be concrete: file type, format, download. Example: "A deployable web app with all selected modules and design applied."</div>
+        </section>
+
+        <!-- Step 2: Source and Legal -->
+        <section class="block" id="block-2" data-step="2">
+          <h2>Block 2 — Source and Legal</h2>
+
+          <label>Source Mode</label>
+          <div class="extra-help" style="margin-bottom:8px;"><strong>What this means:</strong> NEW_PRODUCT = original. AUTHORIZED_REBUILD = you own it or have written permission. PUBLIC_INSPIRATION = you admire public features and will rebuild independently. Most choose NEW_PRODUCT.</div>
+          <div class="radio-group">
+            <label><input type="radio" name="sourceMode" value="NEW_PRODUCT" checked /> New Product</label>
+            <label><input type="radio" name="sourceMode" value="AUTHORIZED_REBUILD" /> Authorized Rebuild</label>
+            <label><input type="radio" name="sourceMode" value="PUBLIC_PRODUCT_INSPIRATION" /> Public Inspiration</label>
+          </div>
+
+          <label>Source URL <span class="hint">N/A for NEW_PRODUCT</span></label>
+          <input type="text" id="sourceUrl" placeholder="https://... or N/A" />
+
+          <label>Authorization Confirmation <span class="hint">Only for AUTHORIZED_REBUILD</span></label>
+          <textarea id="authConfirm" rows="2" placeholder="I confirm I own... or N/A"></textarea>
+          <div class="extra-help"><strong>What this means:</strong> Only needed if you selected AUTHORIZED_REBUILD. Type exactly: "I confirm I own this product and have full rights to rebuild it." Or "I confirm I have written permission from [name]." Otherwise write N/A.</div>
+        </section>
+
+        <!-- Step 3: Platform and Distribution -->
+        <section class="block" id="block-3" data-step="3">
+          <h2>Block 3 — Platform and Distribution</h2>
+
+          <label>Platform</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> WEB = browser app (recommended for most). MOBILE = native app. WEB_AND_MOBILE = both. DESKTOP = desktop program. If unsure, pick WEB.</div>
+          <div class="radio-group">
+            <label><input type="radio" name="platform" value="WEB" checked /> Web</label>
+            <label><input type="radio" name="platform" value="MOBILE" /> Mobile</label>
+            <label><input type="radio" name="platform" value="WEB_AND_MOBILE" /> Web + Mobile</label>
+            <label><input type="radio" name="platform" value="DESKTOP" /> Desktop</label>
+          </div>
+
+          <label>Distribution</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> LOCAL_ONLY = runs only on your computer. DEPLOYABLE_WEB = lives online. APP_STORES = Apple/Google stores. BOTH = local and online. Most start with DEPLOYABLE_WEB.</div>
+          <div class="radio-group">
+            <label><input type="radio" name="distribution" value="LOCAL_ONLY" /> Local Only</label>
+            <label><input type="radio" name="distribution" value="DEPLOYABLE_WEB" checked /> Deployable Web</label>
+            <label><input type="radio" name="distribution" value="APP_STORES" /> App Stores</label>
+            <label><input type="radio" name="distribution" value="BOTH_LOCAL_AND_DEPLOYABLE" /> Both</label>
+          </div>
+        </section>
+
+        <!-- Step 4: Core Features -->
+        <section class="block" id="block-4" data-step="4">
+          <h2>Block 4 — Core Features</h2>
+          <label>List features (one per line)</label>
+          <textarea id="coreFeatures" rows="5" placeholder="- User pastes URL and receives summary..." required></textarea>
+          <div class="extra-help"><strong>What this means:</strong> List only must-have features for your app. Be specific and testable. Good example: "User signs up → creates a project → exports a file." Bad: "Good UX."</div>
+        </section>
+
+        <!-- Step 5: Optional Modules -->
+        <section class="block" id="block-5" data-step="5">
+          <h2>Block 5 — Optional Modules</h2>
+
+          <label>Auth</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> NONE = anyone can use it with no login. REQUIRED = users must sign in.</div>
+          <div class="radio-group">
+            <label><input type="radio" name="auth" value="NONE" checked /> None</label>
+            <label><input type="radio" name="auth" value="REQUIRED" /> Required</label>
+          </div>
+
+          <label>Database</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> NONE = no database (uses local storage). LOCAL = file database. CLOUD = online database like Supabase. AUTO = agent picks.</div>
+          <div class="radio-group">
+            <label><input type="radio" name="database" value="NONE" checked /> None</label>
+            <label><input type="radio" name="database" value="LOCAL" /> Local</label>
+            <label><input type="radio" name="database" value="CLOUD" /> Cloud</label>
+            <label><input type="radio" name="database" value="AUTO" /> Auto</label>
+          </div>
+
+          <label>AI / LLM</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> NONE = no AI features. REQUIRED = your app uses an AI provider like OpenAI or Anthropic.</div>
+          <div class="radio-group">
+            <label><input type="radio" name="ai" value="NONE" checked /> None</label>
+            <label><input type="radio" name="ai" value="REQUIRED" /> Required</label>
+          </div>
+
+          <label>Payments</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> NONE = free app. REQUIRED = users pay (subscription, one-time, etc.).</div>
+          <div class="radio-group">
+            <label><input type="radio" name="payments" value="NONE" checked /> None</label>
+            <label><input type="radio" name="payments" value="REQUIRED" /> Required</label>
+          </div>
+
+          <label>SEO</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> NONE = skip SEO. BASIC = basic metadata and sitemap. FULL = full SEO with comparison pages and structured data.</div>
+          <div class="radio-group">
+            <label><input type="radio" name="seo" value="NONE" /> None</label>
+            <label><input type="radio" name="seo" value="BASIC" /> Basic</label>
+            <label><input type="radio" name="seo" value="FULL" checked /> Full</label>
+          </div>
+
+          <label>Dark Mode</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> YES = users can switch between light and dark themes. NO = only one color theme.</div>
+          <div class="radio-group">
+            <label><input type="radio" name="darkMode" value="YES" checked /> Yes</label>
+            <label><input type="radio" name="darkMode" value="NO" /> No</label>
+          </div>
+        </section>
+
+        <!-- Step 6: Design and Brand -->
+        <section class="block" id="block-6" data-step="6">
+          <h2>Block 6 — Design and Brand</h2>
+
+          <label>Design Direction <span class="hint">Mood, references, feeling</span></label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> Describe the visual mood in plain words. Reference real products you like. Example: "Clean and minimal like Notion."</div>
+          <textarea id="designDirection" rows="2" placeholder="Clean and minimal. Lots of whitespace..." required></textarea>
+
+          <label>Brand Name</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> The name users see in the app. Can differ from the project name.</div>
+          <input type="text" id="brandName" placeholder="RecipeAI" required />
+
+          <label>Primary Color <span class="hint">Your main brand color</span></label>
+          <div class="color-mode-buttons">
+            <button type="button" id="btn-agent" data-action="color-mode" data-mode="agent">🤖 Agent decides</button>
+            <button type="button" id="btn-pick" data-action="color-mode" data-mode="pick">🎨 I'll pick</button>
+          </div>
+          <div id="color-row" class="color-row">
+            <div class="color-pair">
+              <span class="color-pair-label">Main:</span>
+              <input type="color" id="primaryColorPicker" value="#f97316" />
+              <input type="text" id="brandColorPrimary" value="#f97316" placeholder="#4f46e5" />
+            </div>
+            <div class="color-pair">
+              <span class="color-pair-label">Secondary:</span>
+              <input type="color" id="secondaryColorPicker" value="#fb923c" />
+              <input type="text" id="brandColorSecondary" value="#fb923c" placeholder="#fb923c" />
+              <label class="color-no-sec"><input type="checkbox" id="noSecondary" /> None</label>
+            </div>
+          </div>
+          <div class="extra-help"><strong>What this means:</strong> Your main brand color. "Agent decides" lets the AI pick, or choose "I'll pick" to use the color picker.</div>
+        </section>
+
+        <!-- Step 7: Constraints and Agent Behavior -->
+        <section class="block" id="block-7" data-step="7">
+          <h2>Block 7 — Constraints and Agent Behavior</h2>
+
+          <label>Known Constraints <span class="hint">Budget, APIs, infrastructure, or "none"</span></label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> List anything that limits your build: accounts you have, budget limits, required APIs, or "none".</div>
+          <textarea id="knownConstraints" rows="3" placeholder="Must use Supabase..." required></textarea>
+
+          <label>Agent Autonomy</label>
+          <div class="extra-help" style="margin-bottom:6px;"><strong>What this means:</strong> AUTONOMOUS = agent makes all decisions. CHECKPOINTS = agent pauses for your approval at key stages.</div>
+          <div class="radio-group">
+            <label><input type="radio" name="autonomy" value="AUTONOMOUS" checked /> Autonomous</label>
+            <label><input type="radio" name="autonomy" value="CHECKPOINTS" /> Checkpoints</label>
+          </div>
+        </section>
+
+        <!-- Step 9: Expert Mode (alternate path) -->
+        <section class="block" id="block-9" data-step="9">
+          <h2>Expert Mode — Raw Code & File Upload</h2>
+
+          <label>Paste or edit raw code</label>
+          <textarea id="rawCode" rows="8" placeholder="Paste your script chunk or full code here..." class="code-textarea"></textarea>
+
+          <div class="expert-upload">
+            <label>Attach file for evaluation</label>
+            <input type="file" id="eval-file" accept=".txt,.js,.md" />
+            <p id="expert-file-status" class="file-status"></p>
+          </div>
+
+          <button type="button" id="eval-btn" data-action="expert-eval" class="cta-btn">🔨 Evaluate & Generate</button>
+        </section>
+
+        <!-- Step 8: Review & Generate -->
+        <section class="block" id="block-8" data-step="8">
+          <h2>Block 8 — Review & Generate</h2>
+          <div id="review-summary"></div>
+          <div id="review-warnings" class="review-warnings"></div>
+          <div class="review-actions">
+            <button type="button" data-action="generate" class="cta-btn">🔨 Generate Builder Prompt</button>
+            <button type="button" id="copy-btn" data-action="copy" class="cta-btn cta-btn--success">📋 Copy to Clipboard</button>
+            <button type="button" id="legal-scan-btn" data-action="legal-scan" class="cta-btn cta-btn--warning">⚖️ Legal Scan</button>
+          </div>
+          <div id="output-area" class="output-box"></div>
+          <div id="legal-scan-area"></div>
+        </section>
+
+        <!-- Footer Navigation -->
+        <div class="wizard-footer">
+          <button type="button" data-action="prev" id="btn-prev">← Back</button>
+          <span id="step-counter" class="step-counter"></span>
+          <button type="button" data-action="next" id="btn-next">Next →</button>
+          <button type="button" data-action="restart" id="btn-restart">↺ Restart</button>
+          <button type="button" data-action="toggle-help" id="btn-help-toggle" class="help-toggle" title="Toggle expanded guidance">💡</button>
+        </div>
+
+        <!-- Autosave indicator -->
+        <div id="autosave-indicator" class="autosave" aria-live="polite">
+          <span class="autosave-dot"></span>
+          <span class="autosave-text">Progress auto-saved</span>
+        </div>
+
+      </form>
+    </main>
+
+    <footer class="site-footer">
+      <p><strong>© DelQuro Labs, LLC</strong> — For entertainment purposes only. Not legal advice. Not guaranteed for production use. Verify all code, licenses, and permissions independently. No warranty, expressed or implied, including fitness for a particular purpose. Use at your own risk.</p>
+    </footer>
+  </div>
+
+  <script src="builder-script.js"></script>
+  <script src="app.js"></script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a25788cf18b6bdbc',t:'MTc4NTc4MzMwMw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f"}' crossorigin="anonymous"></script>
+</body>
+</html>

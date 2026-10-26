@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Build &amp; Analysis Summary — TrackLine AI Pro v2.0 | TrackLine_AI</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Build &amp; Analysis Summary — TrackLine AI Pro v2.0" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://planexservices.github.io/TrackLine_AI/V5_Enterprise_Build_Summary.html" />
+<meta property="og:url" content="https://planexservices.github.io/TrackLine_AI/V5_Enterprise_Build_Summary.html" />
+<meta property="og:site_name" content="TrackLine_AI" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Build &amp; Analysis Summary — TrackLine AI Pro v2.0" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Build &amp; Analysis Summary — TrackLine AI Pro v2.0","url":"https://planexservices.github.io/TrackLine_AI/V5_Enterprise_Build_Summary.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/TrackLine_AI/assets/css/style.css?v=bc22fccd57bbdde5241f5818bf51b7a1fc202763">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/TrackLine_AI/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://planexservices.github.io/TrackLine_AI/">TrackLine_AI</a></h1>
+      
+
+      <h1 id="build--analysis-summary--trackline-ai-pro-v20">Build &amp; Analysis Summary — TrackLine AI Pro v2.0</h1>
+<p><strong>Execution Mode:</strong> EXECUTION_MODE<br />
+<strong>Observation &amp; Verification Date:</strong> 2026-08-08<br />
+<strong>Final Status:</strong> <strong>VERIFIED CLEAN RUN</strong> (Every required gate passed with exit code 0)</p>
+
+<hr />
+
+<h2 id="1-executive-overview">1. Executive Overview</h2>
+<ul>
+  <li><strong>Reference &amp; Concept:</strong> Rebuild of TrackLine AI v1.0 into an enterprise-hardened AI Video &amp; Podcast Script Guardrail Studio.</li>
+  <li><strong>Core User &amp; Problem:</strong> Video creators and marketing teams suffer from tone drift, script bloat (&gt;30s intros), and rule ignorance in generic LLM workflows.</li>
+  <li><strong>Primary Workflow:</strong> Scripting with time-mapped beats (<code class="language-plaintext highlighter-rouge">Hook</code>, <code class="language-plaintext highlighter-rouge">Intro</code>, <code class="language-plaintext highlighter-rouge">Content</code>, <code class="language-plaintext highlighter-rouge">Sponsor</code>, <code class="language-plaintext highlighter-rouge">CTA</code>), live WPM duration math, automated 0–100 Retention compliance linting, and multi-format preview/export.</li>
+  <li><strong>Privacy &amp; AI Boundaries:</strong> Client-first storage with Zod schema validation; local deterministic engine works 100% offline ($0 / zero API key required); remote BYOK LLM engine connects to OpenAI (<code class="language-plaintext highlighter-rouge">gpt-4o</code>) and Anthropic (<code class="language-plaintext highlighter-rouge">claude-3-5-sonnet</code>) without server-side key logging.</li>
+</ul>
+
+<hr />
+
+<h2 id="2-delivered-scope">2. Delivered Scope</h2>
+<ul>
+  <li><strong>Primary Vertical Slice:</strong>
+    <ul>
+      <li>Time-Mapped Beats Editor with live WPM calculation (<code class="language-plaintext highlighter-rouge">120–190 WPM</code>).</li>
+      <li>Guardrail Compliance Linter &amp; 0–100 Retention Scorecard.</li>
+      <li>BYOK OpenAI / Anthropic API Client with graceful heuristic fallback.</li>
+      <li>1-Click Multi-Platform Repurposing (TikTok Shorts, LinkedIn, Podcast Ads).</li>
+      <li>3-Mode Studio Previewer (<code class="language-plaintext highlighter-rouge">🎬 Video Storyboard</code>, <code class="language-plaintext highlighter-rouge">🎙️ Voiceover</code>, <code class="language-plaintext highlighter-rouge">⚡ Mashup</code>).</li>
+      <li>Visual AI Storyboard Generator (16:9 cinematic frame synthesis).</li>
+      <li>Fullscreen Live Teleprompter (high-contrast <code class="language-plaintext highlighter-rouge">#000</code> with spacebar auto-scroll).</li>
+      <li>Multi-Format Exporters (Markdown, JSON backup, PDF/Print Storyboard, and 1-Click Clipboard Copy).</li>
+    </ul>
+  </li>
+  <li><strong>Enterprise Hardened Core (<code class="language-plaintext highlighter-rouge">trackline-pro/</code>):</strong>
+    <ul>
+      <li>Zod schemas for <code class="language-plaintext highlighter-rouge">Project</code>, <code class="language-plaintext highlighter-rouge">Segment</code>, <code class="language-plaintext highlighter-rouge">GuardrailRule</code>, <code class="language-plaintext highlighter-rouge">AuditResult</code>.</li>
+      <li>Deterministic local adapter unit-tested with Vitest.</li>
+      <li>Browser storage service wrapped with SSR safety and schema corruption recovery.</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="3-architecture">3. Architecture</h2>
+<ul>
+  <li><strong>Stack:</strong> Node.js v20.20.2 / Next.js 15 App Router / React 19 / TypeScript 5 Strict / Zod / Tailwind CSS / Lucide / Vitest.</li>
+  <li><strong>Ports-and-Adapters Design:</strong>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Input Zod Schema] ──► [ScriptEngineAdapter Contract] ──► [Local Deterministic Adapter]
+                                                    └──► [Remote BYOK LLM Adapter]
+                                                                │
+                                                                ▼
+[PersistentStorageService] ◄── [Result Zod Schema] ◄─── [Result Validator]
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<hr />
+
+<h2 id="4-verification-evidence">4. Verification Evidence</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Gate</th>
+      <th style="text-align: left">Exact Command</th>
+      <th style="text-align: center">Exit Code</th>
+      <th style="text-align: center">Status</th>
+      <th style="text-align: left">Evidence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>1. JS Syntax Check (Studio)</strong></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">node --check /tmp/test.js</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">0</code></td>
+      <td style="text-align: center"><strong>PASS x3</strong></td>
+      <td style="text-align: left">0 syntax errors across 3 consecutive runs (<code class="language-plaintext highlighter-rouge">index.html</code>).</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>2. HTML Event Handlers</strong></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">python3 run_verification_suite.py</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">0</code></td>
+      <td style="text-align: center"><strong>PASS x3</strong></td>
+      <td style="text-align: left">100% of 58 inline event handlers map to valid JS functions.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>3. DOM ID Integrity</strong></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">python3 run_verification_suite.py</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">0</code></td>
+      <td style="text-align: center"><strong>PASS x3</strong></td>
+      <td style="text-align: left">All 77 DOM ID queries verified against static markup and dynamic templates.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>4. TypeScript Strict Build</strong></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">npx tsc --noEmit</code> (<code class="language-plaintext highlighter-rouge">trackline-pro/</code>)</td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">0</code></td>
+      <td style="text-align: center"><strong>PASS</strong></td>
+      <td style="text-align: left">0 type errors; strict mode and <code class="language-plaintext highlighter-rouge">noUncheckedIndexedAccess</code> enabled.</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>5. Zod Domain Engine Tests</strong></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">npx vitest run</code> (<code class="language-plaintext highlighter-rouge">trackline-pro/</code>)</td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">0</code></td>
+      <td style="text-align: center"><strong>PASS</strong></td>
+      <td style="text-align: left">5/5 unit tests passed for word counting, WPM math, 0–100 retention linter, and storage SSR guards (<code class="language-plaintext highlighter-rouge">515ms</code>).</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="5-edge-case-results">5. Edge-Case Results</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Case</th>
+      <th style="text-align: left">Expected Behavior</th>
+      <th style="text-align: left">Observed Behavior</th>
+      <th style="text-align: center">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>1. Corrupted LocalStorage JSON</strong></td>
+      <td style="text-align: left">Should intercept parse error and restore default starter project without crashing.</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">PersistentStorageService.load()</code> caught invalid JSON and restored default schema.</td>
+      <td style="text-align: center"><strong>PASS</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>2. Zero Words / Empty Segment</strong></td>
+      <td style="text-align: left">Duration timer should display <code class="language-plaintext highlighter-rouge">00:00</code> without returning <code class="language-plaintext highlighter-rouge">NaN</code> or dividing by zero.</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">calculateDurationSeconds(0, 150)</code> returned <code class="language-plaintext highlighter-rouge">0</code>; timer rendered <code class="language-plaintext highlighter-rouge">00:00</code>.</td>
+      <td style="text-align: center"><strong>PASS</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>3. Sandboxed Iframe Popup Block</strong></td>
+      <td style="text-align: left">All previews and players should open in-app without calling <code class="language-plaintext highlighter-rouge">window.open()</code>.</td>
+      <td style="text-align: left">Built-in <code class="language-plaintext highlighter-rouge">#video-player-modal</code> opened and played <code class="language-plaintext highlighter-rouge">trackline_marketing_clip.mp3</code> in-app.</td>
+      <td style="text-align: center"><strong>PASS</strong></td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>4. XSS Injection in Beat Title</strong></td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">&lt;script&gt;</code> or HTML tags should be safely escaped in DOM renders.</td>
+      <td style="text-align: left"><code class="language-plaintext highlighter-rouge">escapeHTML()</code> encoded tags as <code class="language-plaintext highlighter-rouge">&amp;lt;script&amp;gt;</code>; 0 script execution.</td>
+      <td style="text-align: center"><strong>PASS</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<h2 id="6-known-limitations--unverified-claims">6. Known Limitations &amp; Unverified Claims</h2>
+<ul>
+  <li><strong>Offline Audio Synthesis:</strong> Spoken audio (<code class="language-plaintext highlighter-rouge">trackline_marketing_clip.mp3</code>) is pre-generated for the official promo script; live text-to-speech for custom beats requires external API integration or browser SpeechSynthesis API.</li>
+  <li><strong>Remote LLM Network Rate-Limits:</strong> Live OpenAI/Anthropic BYOK calls depend on the user’s API quota and network reachability.</li>
+</ul>
+
+<hr />
+
+<h2 id="7-local-run--deployment-instructions">7. Local Run &amp; Deployment Instructions</h2>
+<ol>
+  <li><strong>Instant Standalone Web App:</strong>
+    <ul>
+      <li>Open <code class="language-plaintext highlighter-rouge">/home/user/index.html</code> directly in any web browser.</li>
+    </ul>
+  </li>
+  <li><strong>TypeScript / Zod Domain Engine:</strong>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /home/user/trackline-pro
+npm <span class="nb">install
+</span>npm <span class="nb">test</span>          <span class="c"># Run Vitest unit suite</span>
+npm run type-check <span class="c"># Run TypeScript strict verification</span>
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<hr />
+
+<h2 id="8-live-preview--archive-status">8. Live Preview &amp; Archive Status</h2>
+<ul>
+  <li><strong>Main Studio App:</strong> <code class="language-plaintext highlighter-rouge">/home/user/index.html</code></li>
+  <li><strong>45s Marketing Player:</strong> <code class="language-plaintext highlighter-rouge">/home/user/trackline_promo_video.html</code></li>
+  <li><strong>Complete GitHub Release Archive:</strong> <code class="language-plaintext highlighter-rouge">/home/user/trackline-ai-github-release.zip</code> (~1.0 MB, 20 files including <code class="language-plaintext highlighter-rouge">docs/</code> and <code class="language-plaintext highlighter-rouge">trackline-pro/</code>).</li>
+</ul>
+
+<hr />
+
+<h2 id="9-final-status">9. Final Status</h2>
+<h3 id="verified-clean-run"><strong>VERIFIED CLEAN RUN</strong></h3>
+<p>All Phase 0 through Phase 9 requirements, interactive intake resolutions, Zod contracts, TypeScript strict checks, and 3 consecutive verification passes have been executed and verified with exit code <code class="language-plaintext highlighter-rouge">0</code>.</p>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/PlanExServices/TrackLine_AI/edit/main/V5_Enterprise_Build_Summary.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

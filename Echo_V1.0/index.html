@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Echo — local-first AI inbox assistant | Echo_V1.0</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Echo — local-first AI inbox assistant" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://planexservices.github.io/Echo_V1.0/" />
+<meta property="og:url" content="https://planexservices.github.io/Echo_V1.0/" />
+<meta property="og:site_name" content="Echo_V1.0" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Echo — local-first AI inbox assistant" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","headline":"Echo — local-first AI inbox assistant","name":"Echo_V1.0","url":"https://planexservices.github.io/Echo_V1.0/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/Echo_V1.0/assets/css/style.css?v=ad0f8fa01aa553434dbd9d1aad21ba7ada376ace">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/Echo_V1.0/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://planexservices.github.io/Echo_V1.0/">Echo_V1.0</a></h1>
+      
+
+      <h1 id="echo--local-first-ai-inbox-assistant">Echo — local-first AI inbox assistant</h1>
+
+<p>Echo pulls your real email from any IMAP server, classifies it on your own
+machine with a built-in AI model, and lets you act on it from a clean web UI.
+No cloud, no login, no paywall, no third-party AI API.</p>
+
+<p>It is a faithful local-first rebuild of SaneBox’s product:</p>
+<ul>
+  <li>Inbox / Later / News / BlackHole / Snoozed / Reminders / Digest</li>
+  <li>AI triage with plain-English reasons, urgency, follow-up, topics</li>
+  <li>BlackHole a sender to permanently mute them</li>
+  <li>Snooze emails into custom folders</li>
+  <li>Follow-up reminders on threads that need a reply</li>
+  <li>Daily Digest view</li>
+  <li>An 8-page comparison hub for SEO (vs SaneBox, Clean Email, Boomerang, etc.)</li>
+</ul>
+
+<h2 id="what-you-get">What you get</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo/
+├── app/                    # Next.js 14 App Router
+│   ├── page.tsx            # Landing page
+│   ├── inbox/              # The core app (live AI inbox)
+│   ├── connect/            # Bridge setup page (live status)
+│   ├── compare/            # Comparison hub + 8 comparison pages
+│   ├── features/, faq/, about/, security/, privacy/, terms/
+│   └── api/
+│       ├── classify/       # Standalone classifier (used by /api/inbox/ingest)
+│       └── inbox/
+│           ├── ingest/     # Bridge → server: push real mail
+│           ├── actions/    # UI → bridge: queue BlackHole / Move / Snooze
+│           └── ack/        # Bridge → UI: confirm what was applied
+├── components/             # Header, Footer, Logo
+├── lib/
+│   ├── classifier.ts       # The real, multi-signal AI classifier
+│   ├── competitors.ts      # 8 competitor comparison datasets
+│   └── inbox-types.ts      # Shared types
+├── bridge.mjs              # The IMAP bridge (Node, runs on YOUR machine)
+├── Dockerfile
+├── docker-compose.yml
+├── start.sh                # Quick local start
+└── package.json
+</code></pre></div></div>
+
+<h2 id="quick-start-node">Quick start (Node)</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 1. install</span>
+npm ci
+
+<span class="c"># 2. build + start (production)</span>
+npm run build
+npm start
+<span class="c"># → http://localhost:3000</span>
+
+<span class="c"># OR for development with hot reload</span>
+npm run dev
+<span class="c"># → http://localhost:3000</span>
+
+<span class="c"># Use the helper:</span>
+./start.sh           <span class="c"># production</span>
+./start.sh dev       <span class="c"># dev mode</span>
+</code></pre></div></div>
+
+<h2 id="connect-your-real-inbox">Connect your real inbox</h2>
+
+<p>Once the web app is running, open http://localhost:3000/connect and:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># one-time: install the IMAP client</span>
+npm <span class="nb">install </span>imapflow
+
+<span class="c"># one-time: configure your IMAP host + credentials</span>
+node bridge.mjs <span class="nt">--config</span>
+
+<span class="c"># start the sync loop (pulls every 60s by default)</span>
+node bridge.mjs
+</code></pre></div></div>
+
+<p>The web UI’s status pill will go from “Bridge offline” to “Live · imap.gmail.com”
+within a few seconds. Your real mail will appear in the inbox.</p>
+
+<p>The bridge stores your IMAP password in <code class="language-plaintext highlighter-rouge">~/.echo-bridge.json</code> with file mode
+<code class="language-plaintext highlighter-rouge">0600</code>. It only ever talks to your IMAP host and <code class="language-plaintext highlighter-rouge">http://localhost:3000</code>.</p>
+
+<h3 id="provider-quick-reference">Provider quick reference</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Provider</th>
+      <th>IMAP host</th>
+      <th>Port</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Gmail</td>
+      <td><code class="language-plaintext highlighter-rouge">imap.gmail.com</code></td>
+      <td>993</td>
+      <td>Enable 2FA, then create an App password at https://myaccount.google.com/apppasswords</td>
+    </tr>
+    <tr>
+      <td>Outlook / M365</td>
+      <td><code class="language-plaintext highlighter-rouge">outlook.office365.com</code></td>
+      <td>993</td>
+      <td>Account password usually works. With 2FA, use an app password.</td>
+    </tr>
+    <tr>
+      <td>iCloud</td>
+      <td><code class="language-plaintext highlighter-rouge">imap.mail.me.com</code></td>
+      <td>993</td>
+      <td>App-specific password from https://appleid.apple.com</td>
+    </tr>
+    <tr>
+      <td>Yahoo</td>
+      <td><code class="language-plaintext highlighter-rouge">imap.mail.yahoo.com</code></td>
+      <td>993</td>
+      <td>App password from https://login.yahoo.com/account/security</td>
+    </tr>
+    <tr>
+      <td>Fastmail</td>
+      <td><code class="language-plaintext highlighter-rouge">imap.fastmail.com</code></td>
+      <td>993</td>
+      <td>App password from Settings → Passwords &amp; 2FA</td>
+    </tr>
+    <tr>
+      <td>Any IMAP</td>
+      <td><code class="language-plaintext highlighter-rouge">&lt;host&gt;</code></td>
+      <td>993</td>
+      <td>Full email as username, password or app password</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="docker">Docker</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># build and run</span>
+docker compose up <span class="nt">-d</span> <span class="nt">--build</span>
+
+<span class="c"># logs</span>
+docker compose logs <span class="nt">-f</span>
+
+<span class="c"># stop</span>
+docker compose down
+</code></pre></div></div>
+
+<p>The web app will be on http://localhost:3000. The IMAP bridge is intentionally
+not inside the container — it needs access to your host’s network and your
+credentials. Run it on your host machine:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># on the host (not in the container)</span>
+node bridge.mjs <span class="nt">--config</span>
+node bridge.mjs
+</code></pre></div></div>
+
+<p>If the Docker container is on a different host than the bridge, set:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">export </span><span class="nv">ECHO_BASE</span><span class="o">=</span>http://&lt;echo-host&gt;:3000
+node bridge.mjs
+</code></pre></div></div>
+
+<h2 id="deploy">Deploy</h2>
+
+<p>Echo is a standard Next.js 14 app. It works on any host that supports Node 20+
+or Docker:</p>
+
+<ul>
+  <li><strong>Vercel</strong> — <code class="language-plaintext highlighter-rouge">vercel --prod</code> from the project root</li>
+  <li><strong>Railway / Render / Fly.io</strong> — point at this repo; they auto-detect Next.js</li>
+  <li><strong>Any VPS</strong> — <code class="language-plaintext highlighter-rouge">node start.sh</code> behind nginx/caddy</li>
+  <li><strong>Docker</strong> — <code class="language-plaintext highlighter-rouge">docker compose up -d --build</code></li>
+</ul>
+
+<p>Required runtime: Node.js 20 or later. No databases, no env vars, no API keys.</p>
+
+<h2 id="endpoints">Endpoints</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Path</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/</code></td>
+      <td>Landing</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/inbox</code></td>
+      <td>The live inbox app (polls every 5s)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/connect</code></td>
+      <td>Bridge setup with live status</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/compare</code></td>
+      <td>Comparison hub</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/compare/{slug}</code></td>
+      <td>8 competitor pages, pre-rendered for SEO</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/features</code>, <code class="language-plaintext highlighter-rouge">/faq</code>, <code class="language-plaintext highlighter-rouge">/about</code>, <code class="language-plaintext highlighter-rouge">/security</code>, <code class="language-plaintext highlighter-rouge">/privacy</code>, <code class="language-plaintext highlighter-rouge">/terms</code></td>
+      <td>Standard pages</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/sitemap.xml</code>, <code class="language-plaintext highlighter-rouge">/robots.txt</code></td>
+      <td>SEO</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">POST /api/classify</code></td>
+      <td>Standalone classifier (JSON <code class="language-plaintext highlighter-rouge">{emails[]}</code> → <code class="language-plaintext highlighter-rouge">{results[]}</code>)</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">POST /api/inbox/ingest</code></td>
+      <td>Bridge pushes real mail here</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /api/inbox/ingest</code></td>
+      <td>UI polls for mail + bridge status</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">POST /api/inbox/actions</code></td>
+      <td>UI queues a BlackHole / Move / Snooze</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /api/inbox/actions</code></td>
+      <td>Bridge pulls queued actions</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">POST /api/inbox/ack</code></td>
+      <td>Bridge reports what was applied</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">GET /api/inbox/ack</code></td>
+      <td>UI reads acks</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="how-the-ai-works">How the AI works</h2>
+
+<p><code class="language-plaintext highlighter-rouge">lib/classifier.ts</code> is a real, multi-signal feature-engineered classifier
+running in the local Node process. For every email it computes:</p>
+
+<ul>
+  <li><strong>Sender reputation</strong> — known productivity vs. known newsletter vs. suspicious TLD</li>
+  <li><strong>Urgency signals</strong> — “asap”, “by Friday”, “EOD”, “deadline”, “blocking”</li>
+  <li><strong>Follow-up intent</strong> — “need your sign-off”, “circling back”, “did you get”</li>
+  <li><strong>Personal cues</strong> — signed name, casual greeting, short body, personal domain</li>
+  <li><strong>Promo / spam signals</strong> — “70% off”, “free spins”, “click here to claim”</li>
+</ul>
+
+<p>It returns a category, a numeric score (-1..+1), an urgency %, a plain-English
+reason, a suggested folder, an optional follow-up delay in days, an unsubscribe
+flag, and the top 5 topics.</p>
+
+<p>No third-party AI API is called. No email leaves the device.</p>
+
+<h2 id="privacy">Privacy</h2>
+
+<ul>
+  <li>No login, no account, no analytics, no telemetry</li>
+  <li>Email is processed in memory only; closing the server discards it</li>
+  <li>The bridge stores your IMAP password in <code class="language-plaintext highlighter-rouge">~/.echo-bridge.json</code> (mode 0600)</li>
+  <li>The web app only ever talks to <code class="language-plaintext highlighter-rouge">localhost:3000</code>; the bridge only ever talks to
+your IMAP host + <code class="language-plaintext highlighter-rouge">localhost:3000</code></li>
+  <li>The classifier is shipped as part of the app and is fully open to read</li>
+</ul>
+
+<h2 id="license">License</h2>
+
+<p>For educational and productivity use only — not professional advice.</p>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/PlanExServices/Echo_V1.0/edit/main/README.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

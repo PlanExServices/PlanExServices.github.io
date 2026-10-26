@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ZenFlow - Architecture | Tai_Chi</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="ZenFlow - Architecture" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://planexservices.github.io/Tai_Chi/architecture.html" />
+<meta property="og:url" content="https://planexservices.github.io/Tai_Chi/architecture.html" />
+<meta property="og:site_name" content="Tai_Chi" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ZenFlow - Architecture" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"ZenFlow - Architecture","url":"https://planexservices.github.io/Tai_Chi/architecture.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/Tai_Chi/assets/css/style.css?v=2ce104122fce55e56f98b4d89d36a190d61745ca">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/Tai_Chi/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://planexservices.github.io/Tai_Chi/">Tai_Chi</a></h1>
+      
+
+      <h1 id="zenflow---architecture">ZenFlow - Architecture</h1>
+
+<h2 id="system-overview">System Overview</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>┌─────────────────────────────────────────────────────────────────────┐
+│                        ZenFlow PWA                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌───────────┐ │
+│  │   Pages     │  │ Components  │  │   Hooks     │  │  Store    │ │
+│  │             │  │             │  │             │  │ (Zustand) │ │
+│  │ - Home      │  │ - Video     │  │ - useApp    │  │           │ │
+│  │ - Library   │  │   Player    │  │   Store     │  │ - Theme   │ │
+│  │ - Practice  │  │ - Audio     │  │ - useTimer  │  │ - Player  │ │
+│  │ - Progress  │  │   Layer     │  │             │  │ - Audio   │ │
+│  │ - Settings  │  │ - Cards     │  │             │  │           │ │
+│  └─────────────┘  │ - UI        │  │             │  │           │ │
+│                   └─────────────┘  └─────────────┘  └───────────┘ │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │                        Data Layer                               ││
+│  │  ┌───────────────┐  ┌───────────────┐  ┌───────────────────┐   ││
+│  │  │ Static Data   │  │ PostgreSQL    │  │ Local Storage     │   ││
+│  │  │ (TypeScript)  │  │ (Drizzle)     │  │ (Zustand Persist) │   ││
+│  │  │               │  │               │  │                   │   ││
+│  │  │ - Moves       │  │ - Progress    │  │ - Preferences     │   ││
+│  │  │ - Sequences   │  │ - Favorites   │  │ - Theme           │   ││
+│  │  │ - Paths       │  │ - Downloads   │  │ - Session data    │   ││
+│  │  │ - Audio       │  │ - Feedback    │  │                   │   ││
+│  │  └───────────────┘  └───────────────┘  └───────────────────┘   ││
+│  └─────────────────────────────────────────────────────────────────┘│
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      External Services                             │
+│  ┌───────────────┐  ┌───────────────┐  ┌───────────────────────┐   │
+│  │ Video CDN     │  │ Audio CDN     │  │ PostHog (Optional)    │   │
+│  │ (Pexels/Own)  │  │ (Freesound)   │  │ (Analytics)           │   │
+│  └───────────────┘  └───────────────┘  └───────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+</code></pre></div></div>
+
+<h2 id="directory-structure">Directory Structure</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>src/
+├── app/                    # Next.js App Router pages
+│   ├── api/                # API routes
+│   │   └── health/         # Health check endpoint
+│   ├── library/            # Browse moves and sequences
+│   │   ├── moves/          # Move listing and detail
+│   │   └── sequences/      # Sequence listing and detail
+│   ├── practice/           # Practice sessions
+│   │   ├── session/        # Timed practice session
+│   │   └── paths/          # Learning path detail
+│   ├── progress/           # User progress tracking
+│   ├── settings/           # App settings
+│   ├── layout.tsx          # Root layout
+│   ├── page.tsx            # Home page
+│   └── globals.css         # Global styles + design tokens
+│
+├── components/             # React components
+│   ├── cards/              # Card components (move, sequence, path)
+│   ├── layout/             # Layout components (header, nav, container)
+│   ├── providers/          # Context providers (theme, query)
+│   ├── ui/                 # Base UI components
+│   ├── video-player/       # Video player with controls
+│   └── audio-layer/        # Ambient audio player
+│
+├── data/                   # Static content data
+│   ├── moves.ts            # Tai Chi move definitions
+│   ├── sequences.ts        # Sequence definitions
+│   ├── learning-paths.ts   # Learning path definitions
+│   └── audio-tracks.ts     # Audio track definitions
+│
+├── db/                     # Database layer
+│   ├── index.ts            # Drizzle client
+│   └── schema.ts           # Database schema
+│
+├── lib/                    # Utilities and helpers
+│   ├── constants.ts        # App constants
+│   ├── utils.ts            # Utility functions
+│   └── validations.ts      # Zod schemas
+│
+├── store/                  # Zustand state management
+│   └── app-store.ts        # Global app state
+│
+├── styles/                 # Design system
+│   └── tokens.ts           # Design tokens
+│
+└── types/                  # TypeScript types
+    └── index.ts            # Type definitions
+</code></pre></div></div>
+
+<h2 id="data-flow">Data Flow</h2>
+
+<h3 id="video-playback">Video Playback</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User taps Play
+    │
+    ▼
+VideoPlayer component
+    │
+    ├── Load video from CDN/cache
+    │
+    ├── Sync with AudioLayer
+    │       │
+    │       └── Play selected ambient track
+    │
+    └── Update progress via Zustand
+            │
+            └── Persist to localStorage
+</code></pre></div></div>
+
+<h3 id="practice-session">Practice Session</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>User starts timed session
+    │
+    ▼
+SessionTimerStore initialized
+    │
+    ├── Load sequence moves
+    │
+    ├── Start timer
+    │
+    ├── For each move:
+    │       │
+    │       ├── Play video
+    │       │
+    │       ├── Show breathing cues
+    │       │
+    │       └── Auto-advance on complete
+    │
+    └── Session complete
+            │
+            └── Save to database
+</code></pre></div></div>
+
+<h2 id="component-hierarchy">Component Hierarchy</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RootLayout
+├── QueryProvider (TanStack Query)
+└── ThemeProvider (Theme context)
+    ├── Header (Desktop nav)
+    ├── Page Content
+    │   ├── PageContainer
+    │   │   ├── PageHeader
+    │   │   └── Sections
+    │   │       └── Cards / Components
+    │   └── VideoPlayer (when playing)
+    │       └── AudioLayer
+    └── MobileNav (Mobile bottom nav)
+</code></pre></div></div>
+
+<h2 id="state-management">State Management</h2>
+
+<h3 id="global-state-zustand">Global State (Zustand)</h3>
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">theme</code>: dark</td>
+          <td>light</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td><code class="language-plaintext highlighter-rouge">playbackSpeed</code>: 0.5</td>
+          <td>0.75</td>
+          <td>1</td>
+          <td>1.25</td>
+          <td>1.5</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">selectedAudioTrackId</code>: string</li>
+  <li><code class="language-plaintext highlighter-rouge">audioVolume</code>: number</li>
+  <li><code class="language-plaintext highlighter-rouge">isLooping</code>: boolean</li>
+  <li><code class="language-plaintext highlighter-rouge">analyticsEnabled</code>: boolean</li>
+</ul>
+
+<h3 id="session-state-zustand">Session State (Zustand)</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">isPlaying</code>: boolean</li>
+  <li><code class="language-plaintext highlighter-rouge">currentTime</code>: number</li>
+  <li><code class="language-plaintext highlighter-rouge">controlsVisible</code>: boolean</li>
+  <li><code class="language-plaintext highlighter-rouge">currentMoveIndex</code>: number</li>
+</ul>
+
+<h3 id="server-state-postgresql-via-drizzle">Server State (PostgreSQL via Drizzle)</h3>
+<ul>
+  <li>User progress records</li>
+  <li>Favorites</li>
+  <li>Download records</li>
+  <li>Feedback submissions</li>
+  <li>Practice session history</li>
+</ul>
+
+<h2 id="security-considerations">Security Considerations</h2>
+
+<ol>
+  <li><strong>No authentication</strong> - Reduces attack surface</li>
+  <li><strong>Local data only</strong> - No PII transmitted</li>
+  <li><strong>Session IDs</strong> - Random, non-identifiable</li>
+  <li><strong>Content URLs</strong> - Public CDN, no sensitive assets</li>
+  <li><strong>API routes</strong> - Health check only, no user data endpoints</li>
+</ol>
+
+<h2 id="performance-optimizations">Performance Optimizations</h2>
+
+<ol>
+  <li><strong>Static content</strong> - Move/sequence data bundled at build time</li>
+  <li><strong>Image optimization</strong> - Next.js Image component</li>
+  <li><strong>Code splitting</strong> - Per-route bundles</li>
+  <li><strong>Video preloading</strong> - Metadata only until play</li>
+  <li><strong>Audio caching</strong> - Ambient tracks cached after first load</li>
+  <li><strong>Zustand persist</strong> - Instant hydration on load</li>
+</ol>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

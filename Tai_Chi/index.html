@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ZenFlow — Tai Chi Meditation & Learning</title>
+  <style>
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#0f172a;background:#fff;margin:32px}
+    main{max-width:900px;margin:0 auto}
+    header h1{margin:0 0 6px}
+    p.lead{color:#374151}
+    section{margin-top:18px}
+    pre,code{background:#f8fafc;padding:8px;border-radius:6px;overflow:auto}
+    ul,ol{margin-left:20px}
+    footer{margin-top:28px;color:#64748b;font-size:14px}
+    a{color:#0b79ff}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>ZenFlow — Tai Chi Meditation & Learning</h1>
+      <p class="lead">Learn Tai Chi at your own pace with guided video instruction and ambient meditation audio.</p>
+    </header>
+
+    <section>
+      <h2>What is ZenFlow?</h2>
+      <p>ZenFlow is a mobile-first web application for learning Tai Chi through organized video content, ambient meditation audio, and structured movement progressions. Users watch individual Tai Chi move clips and grouped sequences, accompanied by calming background music, to learn form, relax, and achieve mental clarity.</p>
+
+      <h3>Who is it for?</h3>
+      <ul>
+        <li>Adults aged 25–65 who want to reduce stress and learn Tai Chi at home</li>
+        <li>People seeking flexible, self-paced instruction without fixed class schedules</li>
+        <li>Existing practitioners who want structured reference and meditation sessions</li>
+        <li>Anyone interested in mindful movement and wellness</li>
+      </ul>
+
+      <h3>Core Features</h3>
+      <ul>
+        <li>📚 Move Library — Browse individual Tai Chi movements with detailed instruction</li>
+        <li>🎬 Video Player — Full-screen playback with speed control and looping</li>
+        <li>🎵 Ambient Audio — Flowing water, forest sounds, Tibetan bowls</li>
+        <li>📖 Sequences — Curated collections of moves for complete practice</li>
+        <li>🎯 Learning Paths — Structured progression for different goals</li>
+        <li>⏱️ Timed Sessions — 5, 10, 20, or 30-minute guided practice</li>
+        <li>📊 Progress Tracking — Track what you’ve watched (no account required)</li>
+        <li>🌙 Dark Mode — Designed for meditation (dark mode is default)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Quick Start</h2>
+      <h3>Prerequisites</h3>
+      <ul>
+        <li>Node.js 20 or later</li>
+        <li>PostgreSQL 15 or later</li>
+        <li>npm or pnpm</li>
+      </ul>
+
+      <h3>Installation</h3>
+      <pre><code># Clone the repository
+git clone https://github.com/PlanExServices/Tai_Chi.git
+cd Tai_Chi
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your database URL
+
+# Push database schema
+npx drizzle-kit push
+
+# Start development server
+npm run dev
+
+# Open http://localhost:3000 in your browser.
+</code></pre>
+
+      <h3>Environment Variables</h3>
+      <p><strong>Required</strong></p>
+      <pre><code>DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/app_db</code></pre>
+      <p><strong>Optional</strong></p>
+      <pre><code>NEXT_PUBLIC_POSTHOG_API_KEY=phc_xxx  # For analytics</code></pre>
+    </section>
+
+    <section>
+      <h2>Project Structure</h2>
+      <pre><code>src/
+├── app/              # Next.js pages and API routes
+├── components/       # React components
+├── data/             # Static content (moves, sequences, paths)
+├── db/               # Database schema and client
+├── lib/              # Utilities and constants
+├── store/            # Zustand state management
+├── styles/           # Design tokens
+└── types/            # TypeScript definitions
+
+docs/
+├── architecture.md   # System architecture
+├── decisions.md      # Technical decisions
+└── content-guide.md  # How to add content
+</code></pre>
+
+      <h2>Adding Your Own Content</h2>
+      <p>The app ships with placeholder content for demonstration. Before publishing, replace with your own licensed Tai Chi videos and audio.</p>
+      <h4>Videos</h4>
+      <p>Edit <code>src/data/moves.ts</code> and add your video URLs and thumbnails.</p>
+      <h4>Audio</h4>
+      <p>Edit <code>src/data/audio-tracks.ts</code> and add your audio tracks.</p>
+
+      <h2>Development</h2>
+      <pre><code># Start development server
+npm run dev
+
+# Type check
+npm run typecheck
+
+# Build for production
+npm run build
+
+# Start production server
+npm run start
+
+# Database schema push
+npx drizzle-kit push
+</code></pre>
+
+      <h2>Deployment</h2>
+      <p><strong>Vercel (Recommended)</strong></p>
+      <ol>
+        <li>Connect your GitHub repository to Vercel</li>
+        <li>Add environment variables in Vercel dashboard</li>
+        <li>Deploy</li>
+      </ol>
+      <p>Other Platforms: AWS Amplify, Railway, Render, or self-hosted with Node.js.</p>
+
+      <h2>Offline Support</h2>
+      <p>ZenFlow is designed for offline use (PWA, content downloads, persistent progress). The PWA manifest is at <code>public/manifest.json</code>.</p>
+
+      <h2>Design System</h2>
+      <p>Colors and animation guidelines are described in the README. Font: Inter; Default dark background.</p>
+
+      <h2>Known Limitations</h2>
+      <ul>
+        <li>Demo Content — All videos/audio are placeholders</li>
+        <li>No Sync — Progress is device-local only</li>
+        <li>No Offline Video — PWA caching not yet implemented</li>
+        <li>Single Language — English only</li>
+      </ul>
+
+      <h2>Troubleshooting</h2>
+      <p><strong>Video won’t play</strong></p>
+      <ul>
+        <li>Check that the video URL is HTTPS</li>
+        <li>Verify the format is MP4 with H.264 codec</li>
+        <li>Ensure CORS headers allow your domain</li>
+      </ul>
+
+      <p><strong>Database connection fails</strong></p>
+      <pre><code># Check PostgreSQL is running
+pg_isready -h localhost -p 5432
+
+# Verify connection string in .env
+echo $DATABASE_URL
+</code></pre>
+
+      <p><strong>Build fails</strong></p>
+      <pre><code># Clear Next.js cache
+rm -rf .next
+
+# Reinstall dependencies
+rm -rf node_modules
+npm install
+
+# Regenerate Tailwind styles
+npm run build
+</code></pre>
+
+      <h2>Contributing</h2>
+      <ol>
+        <li>Fork the repository</li>
+        <li>Create a feature branch</li>
+        <li>Make your changes</li>
+        <li>Run <code>npm run typecheck && npm run build</code></li>
+        <li>Submit a pull request</li>
+      </ol>
+
+      <h2>License</h2>
+      <p>MIT License. Video and audio content must be separately licensed.</p>
+
+      <h2>Credits</h2>
+      <ul>
+        <li>Placeholder Videos: Pexels (royalty-free)</li>
+        <li>Placeholder Audio: Freesound.org (Creative Commons)</li>
+        <li>Icons: Lucide React</li>
+        <li>UI Framework: Next.js, Tailwind CSS</li>
+      </ul>
+
+    </section>
+
+    <footer>
+      <p>Find your flow. Practice Tai Chi.</p>
+      <p><a href="https://github.com/PlanExServices/Tai_Chi">View on GitHub</a></p>
+    </footer>
+  </main>
+</body>
+</html>

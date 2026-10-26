@@ -1,0 +1,12 @@
+{
+  "name": "Cat's Journey — FE & PE Civil",
+  "short_name": "Cat's Journey",
+  "description": "Free FE Civil and PE Civil exam prep: 677 practice questions with worked solutions, flashcards, formula sheets, and timed mock exams. Works offline.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0F1216",
+  "theme_color": "#0F1216",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

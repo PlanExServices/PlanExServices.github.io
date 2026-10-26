@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ZenFlow - Technical Decisions | Tai_Chi</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="ZenFlow - Technical Decisions" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://planexservices.github.io/Tai_Chi/decisions.html" />
+<meta property="og:url" content="https://planexservices.github.io/Tai_Chi/decisions.html" />
+<meta property="og:site_name" content="Tai_Chi" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ZenFlow - Technical Decisions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"ZenFlow - Technical Decisions","url":"https://planexservices.github.io/Tai_Chi/decisions.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/Tai_Chi/assets/css/style.css?v=2ce104122fce55e56f98b4d89d36a190d61745ca">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/Tai_Chi/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://planexservices.github.io/Tai_Chi/">Tai_Chi</a></h1>
+      
+
+      <h1 id="zenflow---technical-decisions">ZenFlow - Technical Decisions</h1>
+
+<p>This document records key technical decisions made during the development of ZenFlow.</p>
+
+<h2 id="architecture">Architecture</h2>
+
+<h3 id="decision-nextjs-instead-of-expo">Decision: Next.js instead of Expo</h3>
+<p><strong>Rationale:</strong> The sandbox environment is configured for Next.js with PostgreSQL. Rather than fight the environment, we built a mobile-first responsive PWA that delivers an excellent mobile experience through the browser while enabling offline capabilities via service workers.</p>
+
+<p><strong>Trade-offs:</strong></p>
+<ul>
+  <li>Pros: Single codebase, immediate deployability, SEO support, simpler development</li>
+  <li>Cons: Not native app, requires browser, some mobile features unavailable</li>
+</ul>
+
+<h3 id="decision-postgresql-via-drizzle-orm-for-server-side-data">Decision: PostgreSQL via Drizzle ORM for server-side data</h3>
+<p><strong>Rationale:</strong> The environment provides PostgreSQL. We use it for tracking user progress, favorites, and sessions that could be synced across devices in the future.</p>
+
+<p><strong>Schema:</strong></p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">user_progress</code> - Track watched moves and completion rates</li>
+  <li><code class="language-plaintext highlighter-rouge">user_favorites</code> - Bookmarked content</li>
+  <li><code class="language-plaintext highlighter-rouge">user_downloads</code> - Offline content tracking</li>
+  <li><code class="language-plaintext highlighter-rouge">user_preferences</code> - App settings</li>
+  <li><code class="language-plaintext highlighter-rouge">user_feedback</code> - Move clarity ratings</li>
+  <li><code class="language-plaintext highlighter-rouge">practice_sessions</code> - Session history</li>
+</ul>
+
+<h3 id="decision-client-side-state-with-zustand--persistence">Decision: Client-side state with Zustand + persistence</h3>
+<p><strong>Rationale:</strong> For a meditation app, immediate responsiveness is critical. Zustand with localStorage persistence provides instant UI updates without round-trips.</p>
+
+<h3 id="decision-static-content-data-files">Decision: Static content data files</h3>
+<p><strong>Rationale:</strong> Move and sequence data is static content that changes infrequently. Storing it in TypeScript files provides:</p>
+<ul>
+  <li>Type safety</li>
+  <li>Easy content management</li>
+  <li>Offline availability</li>
+  <li>No API calls needed</li>
+</ul>
+
+<h2 id="design">Design</h2>
+
+<h3 id="decision-dark-mode-as-default">Decision: Dark mode as default</h3>
+<p><strong>Rationale:</strong> Tai Chi is often practiced in calm environments. Dark mode reduces eye strain during video viewing and creates a more meditative atmosphere.</p>
+
+<h3 id="decision-400ms-animation-duration">Decision: 400ms animation duration</h3>
+<p><strong>Rationale:</strong> Standard Tai Chi movements are slow and flowing. App animations mirror this aesthetic. Faster animations feel jarring; slower feels sluggish. 400ms is the sweet spot.</p>
+
+<h3 id="decision-no-springbounce-animations">Decision: No spring/bounce animations</h3>
+<p><strong>Rationale:</strong> Bouncy animations break the zen atmosphere. All transitions use ease-out curves for smooth, natural movement.</p>
+
+<h3 id="decision-jade-green-4aa876-as-primary-accent">Decision: Jade green (#4aa876) as primary accent</h3>
+<p><strong>Rationale:</strong> Jade represents balance and harmony in Chinese culture. The specific hue (HSL 160, 45%, 45%) is calming without being too saturated.</p>
+
+<h2 id="content">Content</h2>
+
+<h3 id="decision-placeholder-videos-from-pexels">Decision: Placeholder videos from Pexels</h3>
+<p><strong>Rationale:</strong> The app needs real video content to demonstrate the player functionality. Pexels provides royalty-free video that can be used for development. Production content must be replaced with properly licensed Tai Chi instruction.</p>
+
+<h3 id="decision-audio-placeholders-from-freesound">Decision: Audio placeholders from Freesound</h3>
+<p><strong>Rationale:</strong> Similar to video - demonstration requires real audio files. Production audio should be licensed appropriately.</p>
+
+<h2 id="offline-support">Offline Support</h2>
+
+<h3 id="decision-pwa-approach">Decision: PWA approach</h3>
+<p><strong>Rationale:</strong> Service workers enable offline access without requiring app store distribution. Users can install the PWA to their home screen for an app-like experience.</p>
+
+<h3 id="decision-explicit-download-action-required">Decision: Explicit download action required</h3>
+<p><strong>Rationale:</strong> Video files are large. Automatic caching would consume user storage unexpectedly. Users explicitly choose what to download with clear file size indication.</p>
+
+<h3 id="decision-500mb-storage-warning-threshold">Decision: 500MB storage warning threshold</h3>
+<p><strong>Rationale:</strong> Mobile devices have limited storage. Warning at 400MB, hard limit at 500MB prevents the app from consuming excessive device space.</p>
+
+<h2 id="privacy">Privacy</h2>
+
+<h3 id="decision-no-authentication-required">Decision: No authentication required</h3>
+<p><strong>Rationale:</strong> Friction-free onboarding is essential for a wellness app. Users should be able to start practicing immediately. All data is stored locally.</p>
+
+<h3 id="decision-session-based-anonymous-tracking">Decision: Session-based anonymous tracking</h3>
+<p><strong>Rationale:</strong> A random session ID identifies the browser for progress tracking without any personal information.</p>
+
+<h3 id="decision-optional-analytics-with-opt-out">Decision: Optional analytics with opt-out</h3>
+<p><strong>Rationale:</strong> Analytics help improve the app but are not essential. Users can disable in settings. No PII is ever collected.</p>
+
+<h2 id="future-considerations">Future Considerations</h2>
+
+<ol>
+  <li><strong>Cloud sync:</strong> If user accounts are added, progress could sync across devices</li>
+  <li><strong>Native apps:</strong> Expo version could be built from shared component library</li>
+  <li><strong>AI audio generation:</strong> If Suno or similar offers free API, ambient audio could be generated dynamically</li>
+  <li><strong>Community features:</strong> Sharing practice sessions, following instructors</li>
+  <li><strong>Premium content:</strong> Subscription for advanced sequences and personalized paths</li>
+</ol>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

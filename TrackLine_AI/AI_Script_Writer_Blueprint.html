@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>AI Script Writer &amp; Guardrail Studio — Architecture &amp; Requirements Blueprint | TrackLine_AI</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="AI Script Writer &amp; Guardrail Studio — Architecture &amp; Requirements Blueprint" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://planexservices.github.io/TrackLine_AI/AI_Script_Writer_Blueprint.html" />
+<meta property="og:url" content="https://planexservices.github.io/TrackLine_AI/AI_Script_Writer_Blueprint.html" />
+<meta property="og:site_name" content="TrackLine_AI" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="AI Script Writer &amp; Guardrail Studio — Architecture &amp; Requirements Blueprint" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"AI Script Writer &amp; Guardrail Studio — Architecture &amp; Requirements Blueprint","url":"https://planexservices.github.io/TrackLine_AI/AI_Script_Writer_Blueprint.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/TrackLine_AI/assets/css/style.css?v=bc22fccd57bbdde5241f5818bf51b7a1fc202763">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/TrackLine_AI/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://planexservices.github.io/TrackLine_AI/">TrackLine_AI</a></h1>
+      
+
+      <h1 id="ai-script-writer--guardrail-studio--architecture--requirements-blueprint">AI Script Writer &amp; Guardrail Studio — Architecture &amp; Requirements Blueprint</h1>
+
+<p><em>A comprehensive guide on how to architect, specify, and request a production-grade AI script writer that enforces brand consistency, continuity, and strict guardrails for YouTube, Video, and Podcast content.</em></p>
+
+<hr />
+
+<h2 id="1-why-standard-ai-script-writing-fails-and-how-guardrails-fix-it">1. Why Standard AI Script Writing Fails (And How Guardrails Fix It)</h2>
+
+<p>When content creators ask standard LLMs (ChatGPT, Claude, Gemini) to write a script, three critical problems consistently occur:</p>
+
+<ol>
+  <li><strong>Context &amp; Tone Drift:</strong> The AI forgets the creator’s signature voice, pacing, and vocabulary midway through the script, defaulting to generic AI phrasing (“In today’s fast-paced digital landscape…”).</li>
+  <li><strong>Rule &amp; Sponsor Ignorance:</strong> Crucial requirements—such as sponsor talking points, mandatory disclaimers, or “never say X” brand safety rules—get overlooked or buried.</li>
+  <li><strong>Structural Pacing Breakdown:</strong> Without segment-level constraints, scripts suffer from bloated introductions, weak hooks, and uncalibrated runtimes.</li>
+</ol>
+
+<h3 id="the-solution-a-guardrail-first-context-engine">The Solution: A Guardrail-First Context Engine</h3>
+<p>An effective AI Script Writer is not just a text editor—it is a <strong>state-driven context manager</strong> that wraps every AI generation request in a strict hierarchy of rules:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>+-----------------------------------------------------------------------+
+|                    1. GLOBAL BRAND &amp; LORE BIBLE                      |
+|  (Tone of Voice, Target Audience, Pronunciation, Recurring Vocabulary)|
++-----------------------------------------------------------------------+
+                                   ↓
++-----------------------------------------------------------------------+
+|                   2. HARD GUARDRAILS &amp; COMPLIANCE                     |
+|      (Must-Include Sponsor Rules, Must-Avoid Words/Competitors)       |
++-----------------------------------------------------------------------+
+                                   ↓
++-----------------------------------------------------------------------+
+|                   3. SEGMENT-LEVEL BEAT STRUCTURE                     |
+|      (Hook 0-30s -&gt; Intro -&gt; Content Beat 1 -&gt; Sponsor -&gt; CTA)        |
++-----------------------------------------------------------------------+
+                                   ↓
++-----------------------------------------------------------------------+
+|                     4. CONTEXT-AWARE AI INFERENCE                     |
+|         (Targeted Rewrites, Guardrail Linters, Hook Generators)       |
++-----------------------------------------------------------------------+
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="2-what-to-ask-for-product-requirements-document-prd">2. What to Ask For: Product Requirements Document (PRD)</h2>
+
+<p>When building or commissioning an AI Script Guardrail application, use this exact checklist of features and specifications to define what you need:</p>
+
+<h3 id="module-a-brand-bible--guardrail-engine">Module A: Brand Bible &amp; Guardrail Engine</h3>
+<ul>
+  <li><strong>Tone &amp; Persona Profile:</strong> Stored attributes defining energy level, humor style, technical depth, and pacing (words per minute).</li>
+  <li><strong>Must-Include Checklist (Positive Constraints):</strong> Mandatory items for every project (e.g., CTA to subscribe, sponsor talking points, brand sign-off).</li>
+  <li><strong>Must-Avoid List (Negative Constraints):</strong> Banned vocabulary, competitor mentions, clickbait phrases, or legally restricted claims.</li>
+  <li><strong>Custom Glossary &amp; Lore:</strong> Pronunciation guides, acronym definitions, and show-specific references.</li>
+</ul>
+
+<h3 id="module-b-segment-based-script-editor">Module B: Segment-Based Script Editor</h3>
+<ul>
+  <li><strong>Time-Mapped Beats:</strong> Scripts must be broken down into discrete segments (<em>Hook, Intro, Core Point, Sponsor Read, Outro</em>) rather than a single monolithic block of text.</li>
+  <li><strong>Dual-Column Format:</strong> Separate spoken dialogue/narration from visual cues, B-roll, on-screen text (lower thirds), and sound effects (SFX).</li>
+  <li><strong>Real-Time Pacing Metrics:</strong> Live word count and duration estimation based on the creator’s natural WPM rate (defaulting to ~150 WPM).</li>
+</ul>
+
+<h3 id="module-c-active-continuity-linter--rule-checker">Module C: Active Continuity Linter &amp; Rule Checker</h3>
+<ul>
+  <li><strong>Automated Guardrail Audit:</strong> A linting engine that scans script text against the Brand Bible and Must-Include/Must-Avoid rules.</li>
+  <li><strong>Tone Drift Score:</strong> Detects phrases that sound robotic, passive, or off-brand and suggests creator-aligned alternatives.</li>
+  <li><strong>Sponsor Compliance Validator:</strong> Ensures sponsor reads hit every contractual key message without exceeding allocated time.</li>
+</ul>
+
+<h3 id="module-d-multi-modal-ai-integration--export-mvp-edition">Module D: Multi-Modal AI Integration &amp; Export (MVP Edition)</h3>
+<ul>
+  <li><strong>Zero-Login / Zero-Paywall MVP Engine:</strong> Built-in heuristic and local prompt generator that runs instantly without requiring API keys, user authentication, or subscriptions.</li>
+  <li><strong>System Prompt Exporter:</strong> One-click generation of a self-contained “System Prompt &amp; Context Pack” that can be copied into external AI tools (ChatGPT, Claude, Cursor) while retaining full guardrails.</li>
+  <li><strong>Teleprompter &amp; Production Exports:</strong> Export scripts as clean Markdown, teleprompter-ready plain text, or full production tables.</li>
+</ul>
+
+<hr />
+
+<h2 id="3-how-to-ask-an-ai-to-build-or-extend-this-app">3. How to Ask an AI to Build or Extend This App</h2>
+
+<p>If you want an AI coding assistant to build or customize this tool for you, use this proven prompt template:</p>
+
+<blockquote>
+  <p><strong>Prompt Template for Developers / AI Code Generators:</strong>
+*“I need a web application for YouTube and Podcast scriptwriting that acts as an AI Project Guardrail Studio. The app must separate the writing process into structured, time-mapped segments (Hook, Intro, Core Content, Sponsor, CTA) with separate columns for Spoken Audio and Visual/B-Roll cues.</p>
+
+  <p>It must include a ‘Brand Bible &amp; Guardrails Manager’ where I can define:</p>
+  <ol>
+    <li>Brand Voice &amp; Tone rules</li>
+    <li>Hard ‘Must-Include’ and ‘Must-Avoid’ constraints</li>
+    <li>Sponsor requirements</li>
+  </ol>
+
+  <p>The app must feature an ‘AI Guardrail Linter’ that checks my script against these rules and alerts me to violations or tone drift. It should allow me to connect an OpenAI or Anthropic API key to generate hooks, rewrite segments, and audit scripts with my guardrails automatically injected into the system prompt. Finally, include an ‘Export System Prompt’ tool so I can copy my complete project context and guardrails into ChatGPT or Claude.”*</p>
+</blockquote>
+
+<hr />
+
+<h2 id="4-the-universal-ai-guardrail-system-prompt-blueprint">4. The Universal AI Guardrail System Prompt Blueprint</h2>
+
+<p>When exporting context or calling an LLM API, the application uses this structured system prompt to ensure the AI never violates project rules:</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gh"># YOU ARE A SENIOR CONTENT WRITING PARTNER &amp; GUARDRAIL ENFORCER</span>
+Your job is to assist in writing, editing, and auditing scripts for YouTube, Video, and Podcasts while strictly adhering to the creator's Brand Bible and Hard Guardrails.
+
+<span class="gu">## 1. CREATOR BRAND BIBLE</span>
+<span class="p">-</span> <span class="gs">**Creator Persona &amp; Voice:**</span> {tone_of_voice}
+<span class="p">-</span> <span class="gs">**Target Audience:**</span> {target_audience}
+<span class="p">-</span> <span class="gs">**Target Pacing:**</span> {pacing_wpm} words per minute ({pacing_style})
+<span class="p">-</span> <span class="gs">**Key Glossary &amp; Terms:**</span> {glossary}
+
+<span class="gu">## 2. STRICT GUARDRAIL COMPLIANCE (NON-NEGOTIABLE)</span>
+<span class="gu">### [✓] MUST INCLUDE / REQUIRED ELEMENTS:</span>
+{must_include_rules}
+
+<span class="gu">### [✗] MUST AVOID / BANNED ELEMENTS:</span>
+{must_avoid_rules}
+
+<span class="gu">## 3. PROJECT &amp; SPONSOR CONTEXT</span>
+<span class="p">-</span> <span class="gs">**Project Title:**</span> {project_title}
+<span class="p">-</span> <span class="gs">**Core Hook / Premise:**</span> {premise}
+<span class="p">-</span> <span class="gs">**Sponsor Key Messages:**</span> {sponsor_points}
+
+<span class="gu">## 4. EXECUTION INSTRUCTIONS</span>
+<span class="p">1.</span> When generating or rewriting script segments, always output clean spoken dialogue accompanied by relevant visual/B-roll cues in brackets [Visual: ...].
+<span class="p">2.</span> Never use cliché AI filler ("Delve into", "In today's fast-paced world", "Without further ado").
+<span class="p">3.</span> Ensure every word aligns with the established Tone of Voice and respects all Must-Avoid rules.
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="5-overview-of-your-interactive-application">5. Overview of Your Interactive Application</h2>
+
+<p>We have built <strong>TrackLine AI — Content Script &amp; Guardrail Studio</strong> (<code class="language-plaintext highlighter-rouge">/home/user/index.html</code>) as a complete, fully functional implementation of this architecture. It includes:</p>
+<ul>
+  <li><strong>Interactive Guardrail Bible:</strong> Define your Tone, Must-Include/Avoid rules, and Sponsor talking points.</li>
+  <li><strong>Segment-Based Studio:</strong> Drag-and-drop / editable script segments with real-time WPM duration timers and audio/visual separation.</li>
+  <li><strong>Built-in Guardrail Linter:</strong> Automatically scan your script for banned words, missing sponsor points, or AI filler phrases.</li>
+  <li><strong>Live AI + Smart Demo Mode:</strong> Use your own OpenAI/Anthropic API key, or test instantly with the built-in Intelligent Demo AI engine.</li>
+  <li><strong>Prompt &amp; Script Exporter:</strong> Export scripts to Teleprompter format, Markdown, or copy a full System Prompt Context Pack.</li>
+</ul>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/PlanExServices/TrackLine_AI/edit/main/AI_Script_Writer_Blueprint.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

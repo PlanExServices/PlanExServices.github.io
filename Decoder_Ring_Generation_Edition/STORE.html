@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Decoder Ring Generation Edition | Decoder_Ring_Generation_Edition</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Decoder Ring Generation Edition" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://planexservices.github.io/Decoder_Ring_Generation_Edition/STORE.html" />
+<meta property="og:url" content="https://planexservices.github.io/Decoder_Ring_Generation_Edition/STORE.html" />
+<meta property="og:site_name" content="Decoder_Ring_Generation_Edition" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Decoder Ring Generation Edition" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Decoder Ring Generation Edition","url":"https://planexservices.github.io/Decoder_Ring_Generation_Edition/STORE.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/Decoder_Ring_Generation_Edition/assets/css/style.css?v=3df41c2add8add8f21444f5d5eaf1f3847ce6204">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/Decoder_Ring_Generation_Edition/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://planexservices.github.io/Decoder_Ring_Generation_Edition/">Decoder_Ring_Generation_Edition</a></h1>
+      
+
+      <h1 id="decoder-ring-generation-edition">Decoder Ring Generation Edition</h1>
+
+<p>Free, no-login decoder ring that turns teen and kid slang into plain English for parents. Definitions are paraphrased from named dictionary and news pages — not invented.</p>
+
+<p><strong>Web / PWA is the shippable product.</strong> Apple and Google stores need a later native wrap — see <code class="language-plaintext highlighter-rouge">STORE.md</code>.</p>
+
+<h2 id="stack">Stack</h2>
+
+<p>Next.js 16 (App Router) · React 19 · Tailwind 4 · Drizzle · PostgreSQL</p>
+
+<p>Saved terms live in <code class="language-plaintext highlighter-rouge">localStorage</code> (<code class="language-plaintext highlighter-rouge">jargon-decoder-saved-v1</code>). There is no auth.</p>
+
+<h2 id="setup">Setup</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cp</span> .env.example .env
+npm <span class="nb">install
+</span>npx drizzle-kit push <span class="nt">--force</span>
+pip <span class="nb">install </span>edge-tts   <span class="c"># optional, better Play audio</span>
+npm run dev
+</code></pre></div></div>
+
+<p>Open <a href="http://localhost:3000">http://localhost:3000</a>.</p>
+
+<p>Production:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm run build
+npx next start <span class="nt">-H</span> 0.0.0.0 <span class="nt">-p</span> 3000
+</code></pre></div></div>
+
+<h2 id="legal-required-for-stores">Legal (required for stores)</h2>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">/legal/privacy</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/legal/terms</code></li>
+  <li><code class="language-plaintext highlighter-rouge">/legal/content</code> — rating answers (12+ / Teen, not Kids)</li>
+</ul>
+
+<p>Replace <code class="language-plaintext highlighter-rouge">YOUR-DOMAIN</code> in <code class="language-plaintext highlighter-rouge">STORE.md</code> before you file.</p>
+
+<h2 id="install-on-a-phone">Install on a phone</h2>
+
+<p>HTTPS + this PWA: Safari → Share → Add to Home Screen, or Chrome → Install app.</p>
+
+<h2 id="license">License</h2>
+
+<p>App code is yours to publish. Glossary text is paraphrased from the cited <code class="language-plaintext highlighter-rouge">sourceUrl</code> on each term.</p>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

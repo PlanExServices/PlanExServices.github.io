@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Status | Delquro Labs</title>
+  <meta name="description" content="Current product status and launch readiness information for Delquro Labs." />
+  <meta name="theme-color" content="#0a1420" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="assets/app-icon.svg" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="plain-policy-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar" data-topbar>
+      <div class="wrap topbar-inner">
+        <a href="index.html" class="brand-lockup" aria-label="Delquro Labs home">
+          <img src="assets/logo-mark.svg" alt="" class="brand-mark" width="34" height="41" />
+          <span class="brand-text">
+            <picture>
+              <source srcset="assets/wordmark-light.svg" media="(prefers-color-scheme: dark)" />
+              <img src="assets/wordmark.svg" alt="Delquro Labs" class="brand-wordmark" width="57" height="26" />
+            </picture>
+          </span>
+        </a>
+        <nav class="nav" aria-label="Primary navigation">
+          <a href="index.html">Home</a>
+          <a href="products.html">Products</a>
+          <a href="resources.html">Resources</a>
+          <a href="support.html" class="btn btn-primary">Get support</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="content-panel policy-page">
+        <h1>Status</h1>
+        <p class="policy-meta">Last updated: May 2026</p>
+
+        <h2>Product Status</h2>
+        <p>Commonwealth: Connect is currently in preparation for controlled launch.</p>
+
+        <h2>Current Focus</h2>
+        <p>The current focus is completing the core workflow for team communication, schedule visibility, PTO awareness, manager-posted huddles, and reliable notifications.</p>
+
+        <h2>Launch Readiness</h2>
+        <p>Before broader release, Delquro Labs is reviewing mobile behavior, login stability, notification behavior, privacy readiness, account deletion support, and general product reliability.</p>
+
+        
+        <h2>Launch Countdown</h2>
+        <p>Controlled launch target: <strong>July 1, 2026</strong>.</p>
+        <p id="launch-countdown" class="status-countdown" aria-live="polite">Calculating launch countdown...</p>
+        <script>
+          (function () {
+            var target = new Date("2026-07-01T09:00:00-04:00").getTime();
+            var output = document.getElementById("launch-countdown");
+            if (!output) return;
+
+            function updateCountdown() {
+              var now = new Date().getTime();
+              var distance = target - now;
+
+              if (distance <= 0) {
+                output.textContent = "Launch target date has arrived.";
+                return;
+              }
+
+              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+              output.textContent = days + " days, " + hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+          })();
+        </script>
+        <h2>Contact</h2>
+        <p>For support or access questions, contact <a href="mailto:info@delquro.com">info@delquro.com</a>.</p>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <div class="footer-brand-block">
+          <picture>
+            <source srcset="assets/logo-lockup-light.svg" media="(prefers-color-scheme: dark)" />
+            <img src="assets/logo-lockup.svg" alt="Delquro Labs" class="footer-logo" width="107" height="34" />
+          </picture>
+          <p class="footer-copy">Focused software for communication, coordination, and operational clarity.</p>
+        </div>
+
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <div class="footer-col">
+            <h4>Product</h4>
+            <a href="products.html">All products</a>
+            <a href="commonwealth-connect.html">Commonwealth: Connect</a>
+            <a href="status.html">Status</a>
+            <a href="resources.html">Resources</a>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <a href="support.html">Support</a>
+            <a href="account-deletion.html">Account deletion</a>
+            <a href="mailto:info@delquro.com">info@delquro.com</a>
+          </div>
+          <div class="footer-col">
+            <h4>Legal</h4>
+            <a href="privacy.html">Privacy policy</a>
+            <a href="terms.html">Terms of service</a>
+          </div>
+        </nav>
+      </div>
+
+      <div class="wrap footer-bottom">
+        <span>© 2026 Delquro Labs</span>
+        <span><a href="mailto:info@delquro.com">info@delquro.com</a></span>
+      </div>
+    </footer>
+  </div>
+  <script src="site.js" defer></script>
+</body>
+</html>
+

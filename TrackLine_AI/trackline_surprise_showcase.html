@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrackLine AI — Official Sci-Fi Blockbuster Showcase (Surprise Edition)</title>
+  <style>
+    :root {
+      --bg-root: #070a12;
+      --bg-card: #0f172a;
+      --bg-card-hover: #162032;
+      --border-color: #1e293b;
+      --border-hover: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-emerald: #10b981;
+      --accent-emerald-dim: rgba(16, 185, 129, 0.15);
+      --accent-cyan: #06b6d4;
+      --accent-cyan-dim: rgba(6, 182, 212, 0.15);
+      --accent-rose: #f43f5e;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-root);
+      color: var(--text-main);
+      padding: 24px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand-header {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(16, 185, 129, 0.2));
+      color: var(--accent-cyan);
+      border: 1px solid var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+    }
+
+    /* Main Video Player Container */
+    .player-container {
+      width: 100%;
+      max-width: 960px;
+      background-color: #0c1322;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Visual Slide Screen */
+    .visual-screen {
+      height: 480px;
+      position: relative;
+      background-color: #080c14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    #vfx-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    @keyframes kenBurns {
+      0% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.08) translate(-12px, -8px); }
+      100% { transform: scale(1) translate(0, 0); }
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.85) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .scene-bg {
+      position: absolute;
+      inset: 0;
+      animation: kenBurns 18s infinite ease-in-out;
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+      opacity: 0.45;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      transform: scale(0.98);
+      text-align: center;
+    }
+
+    .scene.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .scene-badge {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+
+    .scene-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.2;
+      max-width: 780px;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    }
+
+    .scene-desc {
+      font-size: 16px;
+      color: var(--text-main);
+      max-width: 660px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-color);
+      padding: 14px 20px;
+      border-radius: 12px;
+    }
+
+    .storyboard-cue-box {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #a5f3fc;
+      background-color: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      padding: 14px 22px;
+      border-radius: 12px;
+      max-width: 680px;
+      margin-top: 10px;
+      text-align: left;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .caption-overlay {
+      position: absolute;
+      bottom: 24px;
+      left: 10%;
+      right: 10%;
+      background-color: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+
+    .player-controls {
+      padding: 18px 24px;
+      background-color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn-play {
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #042f1e;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      transition: all 0.2s;
+    }
+
+    .btn-play:hover {
+      background: linear-gradient(135deg, #34d399, #10b981);
+      transform: translateY(-1px);
+    }
+
+    .progress-bar-wrap {
+      flex: 1;
+      height: 8px;
+      background-color: var(--bg-root);
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      min-width: 200px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-emerald));
+      transition: width 0.1s linear;
+    }
+
+    .time-display {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .script-table {
+      width: 100%;
+      max-width: 960px;
+      border-collapse: collapse;
+      background-color: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .script-table th {
+      background-color: #0f172a;
+      padding: 14px 20px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .script-table td {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 14px;
+      line-height: 1.6;
+      vertical-align: top;
+    }
+
+    .script-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .beat-col { width: 22%; font-weight: 700; color: #fff; }
+    .audio-col { width: 43%; color: var(--text-main); }
+    .visual-col { width: 35%; font-family: var(--font-mono); font-size: 13px; color: #a5f3fc; }
+
+    .badge-pill {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-top: 6px;
+    }
+
+    .btn-action {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      border-color: var(--accent-cyan);
+      color: #fff;
+      background-color: var(--bg-card-hover);
+    }
+
+    /* SVGs Inline Support */
+    .icon {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      vertical-align: middle;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BRAND HEADER -->
+  <div class="brand-header">
+    <div class="brand-title">
+      <span>TrackLine AI</span>
+      <span class="brand-badge">🎁 Surprise Me! Official Sci-Fi Showcase</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <span style="font-size: 12px; color: var(--accent-rose); font-weight: 700; background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.35); padding: 4px 10px; border-radius: 6px;">
+        ⚖️ AI Acknowledged: Script, Voiceover &amp; 16:9 Storyboards are Synthetic Media (FTC/EU Compliant)
+      </span>
+      <a href="index.html" class="btn-action" style="border-color: var(--accent-emerald); color: var(--accent-emerald);">
+        <span>🚀 Open Studio with This Sample</span>
+      </a>
+      <a href="trackline_marketing_clip.mp3" download="trackline_marketing_clip.mp3" class="btn-action">
+        <span>📥 Download Audio MP3</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 3-MODE SWITCHER TOOLBAR -->
+  <div class="mode-toolbar" style="width: 100%; max-width: 960px; display: flex; align-items: center; justify-content: space-between; background-color: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 10px 16px; flex-wrap: wrap; gap: 12px;">
+    <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+      <span style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Preview Mode:</span>
+      <button id="tab-mashup-mode" class="mode-tab-btn active" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer;" onclick="setShowcaseMode('mashup')">⚡ Voice / VFX Mashup</button>
+      <button id="tab-realmovie-mode" class="mode-tab-btn" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 8px; cursor: pointer; color: var(--accent-emerald);" onclick="setShowcaseMode('movie')">🎬 Watch Real Moving Movie Clip (.mp4)</button>
+    </div>
+    <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">
+      ⚡ I2V CAMERA VECTORS • 24 FPS • 16:9 WIDESCREEN
+    </div>
+  </div>
+
+  <!-- INTERACTIVE MARKETING CLIP PLAYER -->
+  <div class="player-container">
+    <!-- Real Moving Movie Clip Player Screen (Hidden by default) -->
+    <div id="real-movie-screen" style="display: none; width: 100%; height: 480px; background: #000; position: relative;">
+      <video id="scifi-video-player" src="trackline_scifi_movie.mp4" controls autoplay loop style="width: 100%; height: 100%; object-fit: contain;"></video>
+    </div>
+
+    <!-- Visual Slide Screen -->
+    <div class="visual-screen" id="vfx-slide-screen">
+      <canvas id="vfx-canvas"></canvas>
+      <!-- SCENE 1: HOOK (0s - 12s) -->
+      <div id="scene-1" class="scene scene-1 active">
+        <div class="scene-bg" style="background-image: url('surprise_beat1.jpg');"></div>
+        <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center;">
+          <div class="scene-badge" style="background-color: rgba(244, 63, 94, 0.2); color: var(--accent-rose); border: 1px solid var(--accent-rose);">Beat 1: Pattern-Interrupt Hook (0s – 12s)</div>
+          <h2 class="scene-title">The $100M Solo Studio: How One Creator Directed a Sci-Fi Feature.</h2>
+          <p class="scene-desc">
+            "While Hollywood spent 100 million dollars on CGI teams, she used time-mapped scripts and Runway Gen-4.5 to enforce temporal consistency across 1,200 shots."
+          </p>
+          <div class="storyboard-cue-box">
+            <strong>🎬 AI Visual Storyboard (Runway Gen-4.5):</strong> Massive neon-lit futuristic spacecraft emerging through storm clouds over an alien ocean, ultra-realistic 8k film still.
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 2: MECHANISM (12s - 33s) -->
+      <div id="scene-2" class="scene scene-2">
+        <div class="scene-bg" style="background-image: url('surprise_beat2.jpg');"></div>
+        <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center;">
+          <div class="scene-badge" style="background-color: rgba(6, 182, 212, 0.2); color: var(--accent-cyan); border: 1px solid var(--accent-cyan);">Beat 2: Guardrail Synchronization (12s – 33s)</div>
+          <h2 class="scene-title">1,200 Shots. Zero Hallucinations. 100/100 Elite Retention.</h2>
+          <p class="scene-desc">
+            "Her secret? She locked her brand guardrails first, so her AI never hallucinated a single frame."
+          </p>
+          <div class="storyboard-cue-box">
+            <strong>🎬 AI Visual Storyboard (Kling 3.0):</strong> Solo creator in dark cyberpunk studio surrounded by glowing editing timelines and AI telemetry HUDs, ultra detailed 8k.
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 3: CTA (33s - 45s) -->
+      <div id="scene-3" class="scene scene-3">
+        <div class="scene-bg" style="background-image: url('surprise_beat3.jpg');"></div>
+        <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center;">
+          <div class="scene-badge" style="background-color: rgba(16, 185, 129, 0.2); color: var(--accent-emerald); border: 1px solid var(--accent-emerald);">Beat 3: Standing Ovation CTA (33s – 43s)</div>
+          <h2 class="scene-title">Direct Your Own Masterpiece.</h2>
+          <p class="scene-desc">
+            "Don't let old workflows slow you down. Try TrackLine AI today and direct your own sci-fi feature."
+          </p>
+          <div class="storyboard-cue-box" style="border-color: var(--accent-emerald); color: #fff;">
+            <strong>🎬 AI Visual Storyboard (Runway Gen-4.5):</strong> Breathtaking movie premiere theater where an audience gives a standing ovation to a glowing sci-fi movie title hologram.
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Dynamic Subtitles -->
+      <div id="caption-overlay" class="caption-overlay">
+        "While Hollywood spent 100 million dollars on CGI teams, she used time-mapped scripts..."
+      </div>
+    </div>
+
+    <!-- Audio Player Controls -->
+    <div class="player-controls">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button id="play-btn" class="btn-play" onclick="togglePlay()">
+          <span>▶ PLAY SCI-FI SHOWCASE</span>
+        </button>
+      </div>
+
+      <div class="progress-bar-wrap" onclick="seekAudio(event)">
+        <div id="progress-fill" class="progress-bar-fill"></div>
+      </div>
+
+      <div class="time-display">
+        <span id="current-time">00:00</span> / <span id="duration-time">00:43</span>
+      </div>
+    </div>
+
+    <!-- Hidden Audio Element -->
+    <audio id="clip-audio" src="trackline_marketing_clip.mp3" preload="auto"></audio>
+  </div>
+
+  <!-- COMPLETE SCRIPT & STORYBOARD TABLE -->
+  <div style="width: 100%; max-width: 960px; display: flex; flex-direction: column; gap: 16px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+      <h3 style="font-size: 18px; font-weight: 700; color: #fff;">The $100M Solo Studio — Complete Script Deck &amp; Storyboard Cues</h3>
+      <span style="font-size: 13px; color: var(--accent-emerald); font-weight: 700;">★ Retention Audit Score: 100 / 100 (Elite)</span>
+    </div>
+
+    <table class="script-table">
+      <thead>
+        <tr>
+          <th>Time-Mapped Beat</th>
+          <th>Spoken Narration (Audio)</th>
+          <th>16:9 AI Visual Storyboard Still &amp; Camera Cue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="beat-col">
+            Beat 1: Pattern-Interrupt Hook
+            <div class="badge-pill" style="background-color: rgba(244, 63, 94, 0.15); color: var(--accent-rose);">0s – 12s • 30 Words</div>
+          </td>
+          <td class="audio-col">
+            While Hollywood spent 100 million dollars on CGI teams, one solo creator used time-mapped scripts and Runway Gen-4.5 to direct an entire sci-fi feature in 48 hours.
+          </td>
+          <td class="visual-col">
+            [Visual: Massive neon-lit futuristic spacecraft emerging through storm clouds over an alien ocean, ultra-realistic 8k film still (`surprise_beat1.jpg`).]
+          </td>
+        </tr>
+        <tr>
+          <td class="beat-col">
+            Beat 2: Guardrail Synchronization
+            <div class="badge-pill" style="background-color: rgba(6, 182, 212, 0.15); color: var(--accent-cyan);">12s – 33s • 52 Words</div>
+          </td>
+          <td class="audio-col">
+            How did she maintain temporal consistency across 1,200 shots? Inside TrackLine AI, she locked her brand guardrails, camera focal length, and WPM pace first—so her AI never hallucinated a single frame.
+          </td>
+          <td class="visual-col">
+            [Visual: Solo creator in dark cyberpunk studio surrounded by glowing editing timelines and AI telemetry HUDs, 8k (`surprise_beat2.jpg`).]
+          </td>
+        </tr>
+        <tr>
+          <td class="beat-col">
+            Beat 3: Standing Ovation CTA
+            <div class="badge-pill" style="background-color: rgba(16, 185, 129, 0.15); color: var(--accent-emerald);">33s – 43s • 26 Words</div>
+          </td>
+          <td class="audio-col">
+            Don't let old workflows slow you down. Try TrackLine AI today and direct your own sci-fi feature.
+          </td>
+          <td class="visual-col">
+            [Visual: Movie premiere theater where an audience gives a standing ovation to a sci-fi hologram (`surprise_beat3.jpg`). URL: trackline.ai.]
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const audio = document.getElementById('clip-audio');
+    const playBtn = document.getElementById('play-btn');
+    const progressFill = document.getElementById('progress-fill');
+    const currentTimeEl = document.getElementById('current-time');
+    const durationTimeEl = document.getElementById('duration-time');
+    const captionEl = document.getElementById('caption-overlay');
+
+    const scenes = [
+      { id: 'scene-1', start: 0, end: 12, caption: '"While Hollywood spent 100 million dollars on CGI teams..."' },
+      { id: 'scene-2', start: 12, end: 33, caption: '"How did she maintain temporal consistency across 1,200 shots? Inside TrackLine AI..."' },
+      { id: 'scene-3', start: 33, end: 45, caption: '"Don\'t let old workflows slow you down. Try TrackLine AI today."' }
+    ];
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function setShowcaseMode(mode) {
+      const mashupScreen = document.getElementById('vfx-slide-screen');
+      const movieScreen = document.getElementById('real-movie-screen');
+      const bMash = document.getElementById('tab-mashup-mode');
+      const bMov = document.getElementById('tab-realmovie-mode');
+      const vid = document.getElementById('scifi-video-player');
+
+      if (mode === 'movie') {
+        if (mashupScreen) mashupScreen.style.display = 'none';
+        if (movieScreen) movieScreen.style.display = 'block';
+        if (bMash) bMash.className = 'mode-tab-btn';
+        if (bMov) bMov.className = 'mode-tab-btn active';
+        if (audio) audio.pause();
+        if (vid) vid.play();
+      } else {
+        if (mashupScreen) mashupScreen.style.display = 'flex';
+        if (movieScreen) movieScreen.style.display = 'none';
+        if (bMash) bMash.className = 'mode-tab-btn active';
+        if (bMov) bMov.className = 'mode-tab-btn';
+        if (vid) vid.pause();
+      }
+    }
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        playBtn.innerHTML = '<span>⏸ PAUSE SCI-FI SHOWCASE</span>';
+        isPlayingVFX = true;
+        animateVFX();
+      } else {
+        audio.pause();
+        playBtn.innerHTML = '<span>▶ PLAY SCI-FI SHOWCASE</span>';
+        isPlayingVFX = false;
+      }
+    }
+
+    // --- LIVE 60FPS ATMOSPHERIC MOTION VFX CANVAS ---
+    const canvas = document.getElementById('vfx-canvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let vfxParticles = [];
+    let isPlayingVFX = false;
+
+    function initVFX() {
+      if (!canvas) return;
+      canvas.width = canvas.parentElement.clientWidth || 960;
+      canvas.height = canvas.parentElement.clientHeight || 480;
+      vfxParticles = [];
+      for (let i = 0; i < 50; i++) {
+        vfxParticles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 2.8 + 0.8,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 0.9 - 0.4,
+          alpha: Math.random() * 0.65 + 0.25,
+          color: i % 2 === 0 ? '#06b6d4' : '#10b981'
+        });
+      }
+    }
+
+    function animateVFX() {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      vfxParticles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+      });
+
+      if (isPlayingVFX) {
+        requestAnimationFrame(animateVFX);
+      }
+    }
+
+    window.addEventListener('resize', initVFX);
+    initVFX();
+
+    function seekAudio(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const pct = clickX / width;
+      if (audio.duration) {
+        audio.currentTime = pct * audio.duration;
+      }
+    }
+
+    audio.addEventListener('loadedmetadata', () => {
+      durationTimeEl.innerText = formatTime(audio.duration);
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      const current = audio.currentTime;
+      const duration = audio.duration || 43;
+      currentTimeEl.innerText = formatTime(current);
+      progressFill.style.width = `${(current / duration) * 100}%`;
+
+      scenes.forEach(scene => {
+        const el = document.getElementById(scene.id);
+        if (current >= scene.start && current < scene.end) {
+          el.classList.add('active');
+          captionEl.innerText = scene.caption;
+        } else {
+          el.classList.remove('active');
+        }
+      });
+    });
+
+    audio.addEventListener('ended', () => {
+      playBtn.innerHTML = '<span>↻ REPLAY SCI-FI SHOWCASE</span>';
+      progressFill.style.width = '100%';
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && e.target.tagName !== 'BUTTON') {
+        e.preventDefault();
+        togglePlay();
+      }
+    });
+  </script>
+</body>
+</html>

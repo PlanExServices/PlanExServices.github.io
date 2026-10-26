@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>ZenFlow - Content Guide | Tai_Chi</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="ZenFlow - Content Guide" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://planexservices.github.io/Tai_Chi/content-guide.html" />
+<meta property="og:url" content="https://planexservices.github.io/Tai_Chi/content-guide.html" />
+<meta property="og:site_name" content="Tai_Chi" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="ZenFlow - Content Guide" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"ZenFlow - Content Guide","url":"https://planexservices.github.io/Tai_Chi/content-guide.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/Tai_Chi/assets/css/style.css?v=2ce104122fce55e56f98b4d89d36a190d61745ca">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/Tai_Chi/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://planexservices.github.io/Tai_Chi/">Tai_Chi</a></h1>
+      
+
+      <h1 id="zenflow---content-guide">ZenFlow - Content Guide</h1>
+
+<p>This guide explains how to add, modify, and manage Tai Chi content in ZenFlow.</p>
+
+<h2 id="video-content-requirements">Video Content Requirements</h2>
+
+<h3 id="recording-guidelines">Recording Guidelines</h3>
+
+<p><strong>Resolution:</strong> 1920x1080 (1080p) minimum, 4K preferred
+<strong>Frame Rate:</strong> 30fps or 60fps
+<strong>Aspect Ratio:</strong> 16:9 (landscape)
+<strong>Duration:</strong> 30 seconds to 3 minutes per move
+<strong>Format:</strong> MP4 with H.264 codec (web-compatible)</p>
+
+<h3 id="best-practices">Best Practices</h3>
+
+<ol>
+  <li><strong>Lighting:</strong> Soft, even lighting. Avoid harsh shadows.</li>
+  <li><strong>Background:</strong> Simple, uncluttered. Neutral colors work best.</li>
+  <li><strong>Clothing:</strong> Loose, traditional Tai Chi attire preferred.</li>
+  <li><strong>Camera Position:</strong> Full body visible. Static camera, no panning.</li>
+  <li><strong>Multiple Angles:</strong> Consider front, side, and back views.</li>
+  <li><strong>Speed:</strong> Normal pace with option for slow-motion segments.</li>
+</ol>
+
+<h3 id="file-hosting">File Hosting</h3>
+
+<p>Videos can be hosted on:</p>
+<ul>
+  <li><strong>CDN</strong> (recommended): Cloudflare R2, AWS S3, Vercel Blob</li>
+  <li><strong>Video platforms</strong>: Mux, Cloudflare Stream</li>
+  <li><strong>Self-hosted</strong>: Your own server with proper bandwidth</li>
+</ul>
+
+<p>Replace placeholder URLs in <code class="language-plaintext highlighter-rouge">src/data/moves.ts</code>:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="nl">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">move-001</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Opening Form</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">videoUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://your-cdn.com/videos/opening-form.mp4</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">thumbnailUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://your-cdn.com/thumbnails/opening-form.jpg</span><span class="dl">'</span><span class="p">,</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="audio-content-requirements">Audio Content Requirements</h2>
+
+<h3 id="ambient-tracks">Ambient Tracks</h3>
+
+<p><strong>Format:</strong> MP3 or AAC
+<strong>Duration:</strong> 5+ minutes (will loop)
+<strong>Sample Rate:</strong> 44.1kHz or 48kHz
+<strong>Bitrate:</strong> 128kbps minimum, 256kbps preferred</p>
+
+<h3 id="recommended-sources">Recommended Sources</h3>
+
+<ul>
+  <li><strong>Freesound.org</strong> - Creative Commons audio</li>
+  <li><strong>Pixabay Music</strong> - Royalty-free tracks</li>
+  <li><strong>Custom composition</strong> - Original ambient audio</li>
+</ul>
+
+<h3 id="audio-types-needed">Audio Types Needed</h3>
+
+<ol>
+  <li><strong>Flowing Water</strong> - Stream, waterfall, rain sounds</li>
+  <li><strong>Forest</strong> - Birds, rustling leaves, gentle wind</li>
+  <li><strong>Tibetan Bowls</strong> - Singing bowls, meditation bells</li>
+  <li><strong>Wind</strong> - Gentle breeze, mountain wind</li>
+  <li><strong>Silence</strong> - No audio track</li>
+</ol>
+
+<p>Update <code class="language-plaintext highlighter-rouge">src/data/audio-tracks.ts</code>:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="nl">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">flowing-water</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Flowing Stream</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">audioUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://your-cdn.com/audio/flowing-water.mp3</span><span class="dl">'</span><span class="p">,</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="adding-new-moves">Adding New Moves</h2>
+
+<h3 id="step-1-prepare-content">Step 1: Prepare Content</h3>
+
+<ol>
+  <li>Record or source the video</li>
+  <li>Create a thumbnail (16:9, 400px width minimum)</li>
+  <li>Host files on CDN</li>
+</ol>
+
+<h3 id="step-2-add-to-data-file">Step 2: Add to Data File</h3>
+
+<p>Edit <code class="language-plaintext highlighter-rouge">src/data/moves.ts</code>:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">moves</span><span class="p">:</span> <span class="nx">TaiChiMove</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="c1">// ... existing moves</span>
+  <span class="p">{</span>
+    <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">move-013</span><span class="dl">'</span><span class="p">,</span> <span class="c1">// Unique ID</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Needle at Sea Bottom</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">chineseName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">海底针</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">A lowering movement where the body sinks...</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">breathingCue</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Exhale as you lower, inhale as you rise.</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">mentalFocusCue</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Imagine reaching down through deep water...</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">commonMistakes</span><span class="p">:</span> <span class="p">[</span>
+      <span class="dl">'</span><span class="s1">Bending from the waist instead of the hips</span><span class="dl">'</span><span class="p">,</span>
+      <span class="dl">'</span><span class="s1">Letting the knee extend past the toes</span><span class="dl">'</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="na">difficulty</span><span class="p">:</span> <span class="dl">'</span><span class="s1">intermediate</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">durationSeconds</span><span class="p">:</span> <span class="mi">45</span><span class="p">,</span>
+    <span class="na">benefits</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Improves hip flexibility</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Strengthens legs</span><span class="dl">'</span><span class="p">],</span>
+    <span class="na">videoUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://your-cdn.com/videos/needle-sea-bottom.mp4</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">thumbnailUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://your-cdn.com/thumbnails/needle-sea-bottom.jpg</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">tags</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">yang-style</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">intermediate</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">lowering</span><span class="dl">'</span><span class="p">],</span>
+  <span class="p">},</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
+<h3 id="step-3-add-to-sequences-optional">Step 3: Add to Sequences (Optional)</h3>
+
+<p>If the move belongs in a sequence, update <code class="language-plaintext highlighter-rouge">src/data/sequences.ts</code>:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span>
+  <span class="nl">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">seq-003</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Yang Style Essentials</span><span class="dl">'</span><span class="p">,</span>
+  <span class="nx">moveIds</span><span class="p">:</span> <span class="p">[</span>
+    <span class="dl">'</span><span class="s1">move-001</span><span class="dl">'</span><span class="p">,</span>
+    <span class="dl">'</span><span class="s1">move-002</span><span class="dl">'</span><span class="p">,</span>
+    <span class="c1">// ... add your new move ID</span>
+    <span class="dl">'</span><span class="s1">move-013</span><span class="dl">'</span><span class="p">,</span>
+  <span class="p">],</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="adding-new-sequences">Adding New Sequences</h2>
+
+<p>Edit <code class="language-plaintext highlighter-rouge">src/data/sequences.ts</code>:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">sequences</span><span class="p">:</span> <span class="nx">TaiChiSequence</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="c1">// ... existing sequences</span>
+  <span class="p">{</span>
+    <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">seq-007</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Evening Wind-Down</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">A gentle sequence for releasing the day...</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">style</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Mixed</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">totalDurationMinutes</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="na">difficulty</span><span class="p">:</span> <span class="dl">'</span><span class="s1">beginner</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">moveIds</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">move-001</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">move-009</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">move-005</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">move-012</span><span class="dl">'</span><span class="p">],</span>
+    <span class="na">coverImageUrl</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://your-cdn.com/covers/evening-wind-down.jpg</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">benefits</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">Promotes relaxation</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Improves sleep quality</span><span class="dl">'</span><span class="p">],</span>
+    <span class="na">isDownloadable</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
+<h2 id="adding-learning-paths">Adding Learning Paths</h2>
+
+<p>Edit <code class="language-plaintext highlighter-rouge">src/data/learning-paths.ts</code>:</p>
+
+<div class="language-typescript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">export</span> <span class="kd">const</span> <span class="nx">learningPaths</span><span class="p">:</span> <span class="nx">LearningPath</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="c1">// ... existing paths</span>
+  <span class="p">{</span>
+    <span class="na">id</span><span class="p">:</span> <span class="dl">'</span><span class="s1">path-006</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Joint Health</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">tagline</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Gentle movement for healthy joints</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">targetUser</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Those with joint stiffness or seeking preventive care.</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">description</span><span class="p">:</span> <span class="dl">'</span><span class="s1">This 4-week program focuses on...</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">sequenceIds</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">seq-001</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">seq-004</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">seq-007</span><span class="dl">'</span><span class="p">],</span>
+    <span class="na">totalWeeks</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="na">sessionsPerWeek</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="na">iconName</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Heart</span><span class="dl">'</span><span class="p">,</span> <span class="c1">// Must match an icon in icon.tsx</span>
+  <span class="p">},</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
+<h2 id="licensing-requirements">Licensing Requirements</h2>
+
+<h3 id="before-publishing">Before Publishing</h3>
+
+<p>⚠️ <strong>All placeholder content must be replaced with properly licensed material.</strong></p>
+
+<p>Required licenses:</p>
+<ul>
+  <li><strong>Video:</strong> Rights to use and distribute Tai Chi instruction</li>
+  <li><strong>Audio:</strong> Royalty-free or Creative Commons (attribution if required)</li>
+  <li><strong>Images:</strong> Rights for commercial/app usage</li>
+</ul>
+
+<h3 id="recommended-license-types">Recommended License Types</h3>
+
+<ul>
+  <li><strong>Royalty-free:</strong> One-time purchase, unlimited use</li>
+  <li><strong>Creative Commons CC0:</strong> No attribution required</li>
+  <li><strong>Creative Commons BY:</strong> Attribution required</li>
+  <li><strong>Custom:</strong> Direct license from content creator</li>
+</ul>
+
+<h3 id="attribution">Attribution</h3>
+
+<p>If using CC-BY content, add attribution in <code class="language-plaintext highlighter-rouge">docs/attributions.md</code> and link from the Settings page.</p>
+
+<h2 id="quality-checklist">Quality Checklist</h2>
+
+<p>Before adding content, verify:</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Video plays smoothly on mobile</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Audio loops seamlessly</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Thumbnail clearly shows the move</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Description is accurate and helpful</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Breathing cues match the movement timing</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Common mistakes are specific and actionable</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Difficulty rating is appropriate</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Tags enable logical filtering</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />All URLs are HTTPS</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Files are optimized for web delivery</li>
+</ul>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

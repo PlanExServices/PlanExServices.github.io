@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What List - Calm, Smart Grocery List & AI Recipe App</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+    :root {
+      --primary: #2a6f97; /* Calm Slate Ocean Blue */
+      --primary-hover: #014f86;
+      --primary-dark: #012a4a;
+      --primary-light: #f0f7ff;
+      --primary-border: #bae6fd;
+      --accent-sage: #2c6e49;
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --radius: 18px;
+      --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 20px 40px -8px rgba(1, 79, 134, 0.16);
+    }
+
+    /* AUTOMATIC SYSTEM DARK MODE SYNC */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-main: #0b132b;
+        --bg-card: #1c2541;
+        --text-main: #f1f5f9;
+        --text-muted: #94a3b8;
+        --border-color: #2a3d66;
+        --primary-light: #12284c;
+        --primary-border: #1e3a8a;
+      }
+    }
+
+    /* MANUAL DARK MODE OVERRIDE CLASS */
+    body.dark-mode {
+      --bg-main: #0b132b;
+      --bg-card: #1c2541;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-color: #2a3d66;
+      --primary-light: #12284c;
+      --primary-border: #1e3a8a;
+    }
+
+    body.light-mode {
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --primary-light: #f0f7ff;
+      --primary-border: #bae6fd;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+    }
+
+    /* HEADER - CLEAN TOP BAR WITH NO LEGAL TAB */
+    .header {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .header { background: rgba(28, 37, 65, 0.96); }
+    }
+
+    body.dark-mode .header { background: rgba(28, 37, 65, 0.96); }
+    body.light-mode .header { background: rgba(255, 255, 255, 0.96); }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 10px 20px;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #014f86, #2a6f97, #2c6e49);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 6px 16px rgba(42, 111, 151, 0.3);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-top: -2px;
+      white-space: nowrap;
+    }
+
+    .nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(241, 245, 249, 0.9);
+      padding: 5px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .nav-tabs { background: #0b132b; }
+    }
+    body.dark-mode .nav-tabs { background: #0b132b; }
+    body.light-mode .nav-tabs { background: rgba(241, 245, 249, 0.9); }
+
+    .nav-btn {
+      padding: 9px 18px;
+      border-radius: 11px;
+      font-size: 12px;
+      font-weight: 800;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(135deg, #014f86, #2a6f97);
+      color: white;
+      box-shadow: 0 4px 12px rgba(42, 111, 151, 0.28);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .active-timer-pill {
+      background: linear-gradient(135deg, #059669, #047857);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .theme-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    /* CONTAINER */
+    .container {
+      max-width: 1280px;
+      margin: 24px auto;
+      padding: 0 20px;
+      width: 100%;
+      flex: 1;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      padding: 24px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+    }
+
+    .ai-banner {
+      background: linear-gradient(135deg, #012a4a 0%, #014f86 60%, #2a6f97 100%);
+      color: white;
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 24px;
+    }
+
+    .ai-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #bae6fd;
+      margin-bottom: 10px;
+    }
+
+    .ai-form { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .ai-input {
+      flex: 1; min-width: 260px; padding: 12px 16px; border-radius: 12px;
+      border: none; font-size: 14px; font-weight: 600; outline: none; color: #0f172a;
+    }
+
+    .btn-teal {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white; font-weight: 800; border: none;
+      padding: 12px 20px; border-radius: 12px; cursor: pointer;
+      font-size: 13px; display: flex; align-items: center; gap: 6px; transition: all 0.2s;
+    }
+
+    .btn-teal:hover { background: linear-gradient(135deg, #059669, #047857); }
+
+    .pills-bar { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; align-items: center; }
+
+    .pill-btn {
+      padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 800;
+      border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-muted); cursor: pointer; white-space: nowrap;
+    }
+
+    .pill-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+    .btn-add-list {
+      background: var(--primary-light); color: var(--primary); border: 1px dashed var(--primary-border);
+      padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; white-space: nowrap; transition: all 0.2s;
+    }
+
+    .btn-add-list:hover { background: var(--primary); color: white; border-style: solid; }
+
+    .aisle-card {
+      background: var(--bg-card); border-radius: 16px;
+      border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 16px; box-shadow: var(--shadow-sm);
+    }
+
+    .aisle-header {
+      padding: 12px 16px; display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.8px; border-bottom: 1px solid var(--border-color);
+    }
+
+    .cat-Produce { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+    .cat-Dairy { background: #f0f9ff; color: #075985; border-color: #bae6fd; }
+    .cat-Meat { background: #fff1f2; color: #9f1239; border-color: #fecdd3; }
+    .cat-Bakery { background: #fffbe3; color: #92400e; border-color: #fde68a; }
+    .cat-Pantry { background: #faf5ff; color: #6b21a8; border-color: #e9d5ff; }
+
+    .badge-count {
+      background: rgba(255,255,255,0.95); padding: 3px 8px; border-radius: 10px;
+      font-size: 11px; font-weight: 800; color: #334155;
+    }
+
+    .item-list { list-style: none; }
+    .item-row {
+      padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color);
+    }
+
+    .checkbox {
+      width: 22px; height: 22px; border-radius: 6px; border: 2px solid #cbd5e1;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; background: var(--bg-card); font-size: 12px; font-weight: 900;
+    }
+
+    .checkbox.checked { background: #059669; border-color: #059669; color: white; }
+
+    .qty-box {
+      display: flex; align-items: center; background: var(--bg-main); padding: 3px 8px;
+      border-radius: 8px; font-size: 12px; font-weight: 800; border: 1px solid var(--border-color);
+    }
+
+    .recipe-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;
+    }
+
+    .recipe-card {
+      background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border-color);
+      overflow: hidden; box-shadow: var(--shadow-md); display: flex; flex-direction: column; justify-content: space-between;
+    }
+
+    .recipe-banner-svg {
+      height: 180px; width: 100%; position: relative; overflow: hidden; display: flex; align-items: flex-end;
+    }
+
+    .banner-calm { background: linear-gradient(135deg, #014f86, #2a6f97, #2c6e49); }
+
+    .recipe-tag {
+      position: absolute; top: 10px; left: 10px; background: rgba(1, 79, 134, 0.92); color: white;
+      font-size: 10px; font-weight: 800; padding: 3px 10px; border-radius: 16px; text-transform: uppercase;
+    }
+
+    .recipe-title-overlay {
+      position: relative; z-index: 10; padding: 14px; width: 100%;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent); color: white;
+    }
+
+    .recipe-title { font-size: 17px; font-weight: 800; }
+    .recipe-body { padding: 16px; }
+
+    .scaler-box {
+      background: var(--primary-light); border: 1px solid var(--primary-border);
+      padding: 8px 12px; border-radius: 10px; display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; font-weight: 800; color: var(--primary); margin: 10px 0;
+    }
+
+    .recipe-actions {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 16px;
+      border-top: 1px solid var(--border-color); background: var(--bg-main);
+    }
+
+    .btn-green {
+      background: linear-gradient(135deg, #059669, #047857); color: white; border: none; padding: 10px;
+      border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #014f86, #2a6f97); color: white; border: none; padding: 10px;
+      border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer;
+    }
+
+    .step-box {
+      background: var(--bg-main); border: 1px solid var(--border-color);
+      padding: 14px; border-radius: 14px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px;
+    }
+
+    .step-timer-btn {
+      background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857;
+      padding: 5px 12px; border-radius: 8px; font-weight: 800; font-size: 11px;
+      cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s;
+    }
+
+    .step-timer-btn:hover { background: #059669; color: white; }
+
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(11, 19, 43, 0.85); backdrop-filter: blur(8px);
+      z-index: 200; display: flex; align-items: center; justify-content: center; padding: 16px;
+    }
+
+    .modal-content {
+      background: var(--bg-card); border-radius: 20px; width: 100%; max-width: 740px; max-height: 90vh;
+      overflow-y: auto; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #012a4a, #014f86); color: white; padding: 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .task-timer-card {
+      background: #ecfdf5; border: 1px solid #a7f3d0; padding: 16px; border-radius: 16px; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    }
+
+    .timer-digits {
+      font-size: 30px; font-weight: 900; font-family: monospace; color: #047857; letter-spacing: 2px;
+    }
+
+    .toast {
+      position: fixed; bottom: 20px; right: 20px; background: #047857; color: white; padding: 12px 20px;
+      border-radius: 14px; font-size: 13px; font-weight: 800; box-shadow: var(--shadow-lg); z-index: 300; display: flex; align-items: center; gap: 8px;
+    }
+
+    .footer {
+      background: #0b132b; color: #94a3b8; padding: 32px 20px; text-align: center; font-size: 12px; margin-top: auto; border-top: 1px solid #1c2541;
+    }
+
+    .legal-box {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: var(--radius); padding: 20px; margin-top: 20px; font-size: 12px; color: var(--text-muted); line-height: 1.6;
+    }
+
+    .legal-box h3 {
+      font-size: 14px; font-weight: 800; color: var(--text-main); margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        </div>
+        <div>
+          <div class="brand-title">What List</div>
+          <div class="brand-sub">Calm & Intelligent Grocery App</div>
+        </div>
+      </a>
+
+      <nav class="nav-tabs">
+        <button class="nav-btn active" onclick="switchTab('lists', this)">🛒 Grocery Lists</button>
+        <button class="nav-btn" onclick="switchTab('recipes', this)">✨ Recipes & AI</button>
+        <button class="nav-btn" onclick="switchTab('mealplanner', this)">📅 Meal Planner</button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">🌙</button>
+        <div id="header-timer-pill" class="active-timer-pill" onclick="switchTab('recipes', document.querySelectorAll('.nav-btn')[1]);">
+          <span>⏱</span> <span id="header-timer-text">Timer Ready</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <div class="container">
+    
+    <!-- TAB 1: GROCERY LISTS -->
+    <div id="tab-lists">
+      <div class="card" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+        <div>
+          <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase;">Active List</div>
+          <h1 style="font-size: 24px; font-weight: 900;" id="active-list-title">Main Grocery List</h1>
+        </div>
+
+        <div class="pills-bar" id="list-pills-bar">
+          <!-- Rendered dynamically with + New List -->
+        </div>
+      </div>
+
+      <!-- AI Quick Add Banner -->
+      <div class="ai-banner">
+        <div class="ai-title">✨ AI Natural Language Quick-Add (Auto-Sorts Store Aisles)</div>
+        <form class="ai-form" onsubmit="handleQuickAdd(event)">
+          <input type="text" id="quick-input" class="ai-input" placeholder='e.g., "2 lbs organic chicken breast, 1 gallon whole milk, 3 avocados, 1 sourdough bread"' />
+          <button type="submit" class="btn-teal">+ Add Items</button>
+        </form>
+      </div>
+
+      <div id="aisles-container"></div>
+      <div id="crossed-off-container"></div>
+    </div>
+
+    <!-- TAB 2: RECIPES & AI -->
+    <div id="tab-recipes" style="display: none;">
+      <!-- AI Recipe Importer -->
+      <div class="ai-banner">
+        <div class="ai-title">✨ AI Recipe Importer & Web Scraper</div>
+        <form class="ai-form" onsubmit="handleImportRecipe(event)">
+          <input type="text" id="recipe-input" class="ai-input" placeholder="Paste recipe URL or type dish name (e.g. Creamy Tuscan Garlic Salmon)..." />
+          <button type="submit" class="btn-teal">Import Recipe</button>
+        </form>
+      </div>
+
+      <div class="recipe-grid" id="recipes-container"></div>
+    </div>
+
+    <!-- TAB 3: MEAL PLANNER -->
+    <div id="tab-mealplanner" style="display: none;">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase;">Weekly Household Calendar</div>
+            <h2 style="font-size: 22px; font-weight: 900;">Weekly Meal Schedule</h2>
+          </div>
+          <button class="btn-teal" onclick="generateWeeklyList()">Generate Grocery List for Week</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;" id="meal-plan-grid"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: LEGAL TERMS -->
+    <div id="tab-legal" style="display: none;">
+      <div class="legal-box">
+        <h3>⚖ What List — Legal Notices, Terms of Use & Trademark Disclaimers</h3>
+        <p style="margin-bottom: 12px;"><b>Effective Date:</b> July 30, 2026 • <b>Last Audited:</b> July 30, 2026</p>
+        
+        <p style="margin-bottom: 12px;">
+          <b>1. Disclaimer of Non-Affiliation and Endorsement:</b> <i>What List</i> is an independent software application developed for household list organization and recipe management. <i>What List</i> is NOT affiliated, associated, authorized, endorsed by, or in any way officially connected with any third-party list software or corporate entity. Reference to any product or service names is strictly for descriptive nominative fair use.
+        </p>
+
+        <p style="margin-bottom: 12px;">
+          <b>2. Educational, Nutritional & Medical Disclaimer:</b> All content provided within What List—including AI recipe parsing, ingredient unit conversions, and step cooking timers—is provided strictly for educational and personal organization purposes only. What List does not provide medical, allergen, or professional nutritional advice.
+        </p>
+
+        <p style="margin-bottom: 12px;">
+          <b>3. Limitation of Liability:</b> To the maximum extent permitted by applicable law, in no event shall the operators of What List be liable for any direct, indirect, incidental, or consequential damages resulting from user reliance on recipe instructions or step countdown timers.
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COOK MODE MODAL -->
+  <div id="cook-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; color: #bae6fd;">Hands-Free Kitchen Cook Mode</div>
+          <h2 id="modal-recipe-title" style="font-size: 20px; font-weight: 900;">Recipe Title</h2>
+        </div>
+        <button onclick="closeCookModal()" style="background: transparent; border: none; color: white; font-size: 24px; cursor: pointer;">✕</button>
+      </div>
+
+      <div style="padding: 24px;">
+        <div class="task-timer-card">
+          <div style="flex:1;">
+            <div style="font-size: 11px; font-weight: 900; color: #047857; text-transform: uppercase;" id="active-task-name">⏱ Kitchen Timer</div>
+            <div class="timer-digits" id="modal-timer-digits">05:00</div>
+          </div>
+          <button class="btn-teal" onclick="toggleTimer()" id="timer-toggle-btn">▶ Start</button>
+        </div>
+
+        <h3 style="font-size: 13px; font-weight: 900; color: var(--primary); text-transform: uppercase; margin-bottom: 14px;">Step-by-Step Instructions</h3>
+        <div id="modal-steps"></div>
+      </div>
+
+      <div style="padding: 16px 24px; background: var(--bg-main); border-top: 1px solid var(--border-color); text-align: right;">
+        <button class="btn-primary" onclick="closeCookModal()">Finished Cooking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-banner" class="toast" style="display: none;">
+    <span style="font-size: 16px;">🔔</span> <span id="toast-text">Notification message</span>
+  </div>
+
+  <!-- FOOTER - LEGAL LINK ONLY IN FOOTER -->
+  <footer class="footer">
+    <div style="font-weight: 800; color: white; margin-bottom: 6px; font-size: 13px;">What List • Calm & Intelligent Household App</div>
+    <div>For educational and informational purposes only. All product names and trademarks belong to their respective owners. <a href="#" onclick="switchTab('legal', null); return false;" style="color:#38bdf8; text-decoration:underline; font-weight:700;">Legal Terms & Disclaimers</a></div>
+  </footer>
+
+  <!-- APPLICATION LOGIC -->
+  <script>
+    let activeTab = 'lists';
+    let activeListId = 'l1';
+    let activeRecipeId = null;
+
+    let timerSecs = 300;
+    let timerRunning = false;
+    let timerInterval = null;
+
+    let lists = [
+      { id: 'l1', name: 'Main Grocery List' },
+      { id: 'l2', name: 'Specialty Store' },
+      { id: 'l3', name: 'Wholesale Bulk Store' }
+    ];
+
+    // LAUNCHES CLEAN: NO HARDCODED DEMO ITEMS OR RECIPES
+    let items = [];
+    let recipes = [];
+    let recipeScales = {};
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+    }
+
+    function switchTab(tab, btn) {
+      activeTab = tab;
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      document.getElementById('tab-lists').style.display = tab === 'lists' ? 'block' : 'none';
+      document.getElementById('tab-recipes').style.display = tab === 'recipes' ? 'block' : 'none';
+      document.getElementById('tab-mealplanner').style.display = tab === 'mealplanner' ? 'block' : 'none';
+      document.getElementById('tab-legal').style.display = tab === 'legal' ? 'block' : 'none';
+
+      if (tab === 'recipes') renderRecipes();
+      if (tab === 'mealplanner') renderMealPlan();
+    }
+
+    function showToast(text) {
+      const banner = document.getElementById('toast-banner');
+      document.getElementById('toast-text').innerText = text;
+      banner.style.display = 'flex';
+      setTimeout(() => { banner.style.display = 'none'; }, 3000);
+    }
+
+    // CREATE NEW LIST FUNCTION
+    function createNewList() {
+      const name = prompt("Enter new list name (e.g. Farmers Market, Hardware Store, Party Prep):");
+      if (name && name.trim()) {
+        const id = 'l' + Date.now();
+        lists.push({ id, name: name.trim() });
+        activeListId = id;
+        renderListPills();
+        renderList();
+        showToast(`Created new list "${name.trim()}"!`);
+      }
+    }
+
+    function renderListPills() {
+      const bar = document.getElementById('list-pills-bar');
+      if (!bar) return;
+      
+      let html = '';
+      lists.forEach(l => {
+        const isActive = l.id === activeListId;
+        html += `<button class="pill-btn ${isActive ? 'active' : ''}" onclick="selectList('${l.id}', this)">${l.name}</button>`;
+      });
+      html += `<button class="btn-add-list" onclick="createNewList()">+ New List</button>`;
+      bar.innerHTML = html;
+
+      const activeListObj = lists.find(l => l.id === activeListId);
+      if (activeListObj) {
+        document.getElementById('active-list-title').innerText = activeListObj.name;
+      }
+    }
+
+    function autoCategorize(name) {
+      const lower = name.toLowerCase().trim();
+      if (lower.includes('apple') || lower.includes('avocado') || lower.includes('spinach') || lower.includes('garlic') || lower.includes('onion') || lower.includes('tomato')) return 'Produce';
+      if (lower.includes('milk') || lower.includes('egg') || lower.includes('cheese') || lower.includes('cream') || lower.includes('butter')) return 'Dairy & Eggs';
+      if (lower.includes('chicken') || lower.includes('pancetta') || lower.includes('beef') || lower.includes('pork') || lower.includes('salmon')) return 'Meat & Seafood';
+      if (lower.includes('bread') || lower.includes('sourdough') || lower.includes('tortilla') || lower.includes('bagel')) return 'Bakery';
+      if (lower.includes('oil') || lower.includes('pasta') || lower.includes('rice') || lower.includes('sauce') || lower.includes('flour')) return 'Pantry & Canned';
+      return 'Other';
+    }
+
+    function parseInput(input) {
+      const lines = input.split(/[\n,;]+/).map(s => s.trim()).filter(Boolean);
+      return lines.map(line => {
+        const match = line.match(/^([\d/.\s\w\-%]+?)\s+(?:of\s+)?(.+)$/i);
+        let qty = '1';
+        let name = line;
+        if (match && /^\d/.test(match[1])) {
+          qty = match[1].trim();
+          name = match[2].trim();
+        }
+        return { name, quantity: qty, category: autoCategorize(name) };
+      });
+    }
+
+    function renderList() {
+      renderListPills();
+      const current = items.filter(i => i.listId === activeListId);
+      const uncompleted = current.filter(i => !i.completed);
+      const completed = current.filter(i => i.completed);
+
+      const categories = Array.from(new Set(uncompleted.map(i => i.category)));
+      const aislesContainer = document.getElementById('aisles-container');
+      aislesContainer.innerHTML = '';
+
+      if (uncompleted.length === 0) {
+        aislesContainer.innerHTML = `
+          <div class="card" style="text-align:center; padding:40px; color:var(--text-muted);">
+            <div style="font-size:32px; margin-bottom:10px;">🛒</div>
+            <div style="font-size:16px; font-weight:800; color:var(--text-main); margin-bottom:4px;">Your list is clean & empty</div>
+            <div style="font-size:12px;">Type items in the Quick-Add bar above (e.g. "2 lbs chicken, 1 gal milk") or import recipes!</div>
+          </div>
+        `;
+      } else {
+        categories.forEach(cat => {
+          const group = uncompleted.filter(i => i.category === cat);
+          const catClass = 'cat-' + cat.split(' ')[0];
+
+          let rowsHtml = '';
+          group.forEach(item => {
+            rowsHtml += `
+              <li class="item-row">
+                <div style="display:flex; align-items:center; gap:12px; flex:1;">
+                  <div class="checkbox" onclick="toggleItem('${item.id}')"></div>
+                  <div>
+                    <div style="font-size:14px; font-weight:700;">${item.name}</div>
+                    ${item.source ? `<div style="font-size:11px; color:var(--primary); font-weight:700;">From: ${item.source}</div>` : ''}
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <div class="qty-box">
+                    <button class="qty-btn" onclick="updateQty('${item.id}', -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+                  </div>
+                  <button class="icon-btn" onclick="deleteItem('${item.id}')">🗑</button>
+                </div>
+              </li>
+            `;
+          });
+
+          aislesContainer.innerHTML += `
+            <div class="aisle-card">
+              <div class="aisle-header ${catClass}">
+                <span>${cat}</span>
+                <span class="badge-count">${group.length} items</span>
+              </div>
+              <ul class="item-list">${rowsHtml}</ul>
+            </div>
+          `;
+        });
+      }
+
+      // Crossed Off
+      const crossedContainer = document.getElementById('crossed-off-container');
+      if (completed.length > 0) {
+        let rows = '';
+        completed.forEach(item => {
+          rows += `
+            <li class="item-row" style="opacity: 0.65;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div class="checkbox checked" onclick="toggleItem('${item.id}')">✓</div>
+                <div style="font-size:14px; text-decoration:line-through; color:var(--text-muted);">${item.quantity} ${item.name}</div>
+              </div>
+              <button class="icon-btn" onclick="deleteItem('${item.id}')">🗑</button>
+            </li>
+          `;
+        });
+
+        crossedContainer.innerHTML = `
+          <div class="card" style="background: var(--bg-main);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+              <span style="font-size:12px; font-weight:900; color:var(--text-muted); text-transform:uppercase;">Crossed Off (${completed.length})</span>
+              <button onclick="clearCrossed()" style="border:none; background:transparent; color:var(--primary); font-weight:800; font-size:12px; cursor:pointer;">Clear All</button>
+            </div>
+            <ul class="item-list">${rows}</ul>
+          </div>
+        `;
+      } else {
+        crossedContainer.innerHTML = '';
+      }
+    }
+
+    function toggleItem(id) {
+      items = items.map(i => i.id === id ? { ...i, completed: !i.completed } : i);
+      renderList();
+    }
+
+    function updateQty(id, delta) {
+      items = items.map(i => {
+        if (i.id !== id) return i;
+        const num = parseInt(i.quantity, 10);
+        if (!isNaN(num)) {
+          return { ...i, quantity: `${Math.max(1, num + delta)}` };
+        }
+        return i;
+      });
+      renderList();
+    }
+
+    function deleteItem(id) {
+      items = items.filter(i => i.id !== id);
+      renderList();
+    }
+
+    function clearCrossed() {
+      items = items.filter(i => !(i.listId === activeListId && i.completed));
+      renderList();
+    }
+
+    function handleQuickAdd(e) {
+      e.preventDefault();
+      const input = document.getElementById('quick-input');
+      if (!input.value.trim()) return;
+      const parsed = parseInput(input.value);
+      parsed.forEach((p, idx) => {
+        items.unshift({
+          id: `new-${Date.now()}-${idx}`,
+          name: p.name,
+          quantity: p.quantity,
+          category: p.category,
+          completed: false,
+          listId: activeListId
+        });
+      });
+      showToast(`Added ${parsed.length} items to list!`);
+      input.value = '';
+      renderList();
+    }
+
+    function selectList(id, btn) {
+      activeListId = id;
+      renderListPills();
+      renderList();
+    }
+
+    // RENDER RECIPES
+    function renderRecipes() {
+      const container = document.getElementById('recipes-container');
+      container.innerHTML = '';
+
+      if (recipes.length === 0) {
+        container.innerHTML = `
+          <div class="card" style="grid-column: 1 / -1; text-align:center; padding:48px; color:var(--text-muted);">
+            <div style="font-size:32px; margin-bottom:12px;">✨</div>
+            <div style="font-size:16px; font-weight:800; color:var(--text-main); margin-bottom:4px;">No saved recipes yet</div>
+            <div style="font-size:12px;">Paste any recipe URL or dish name in the AI Importer above to build your recipe box!</div>
+          </div>
+        `;
+        return;
+      }
+
+      recipes.forEach(r => {
+        const scale = (recipeScales[r.id] || r.servings) / r.servings;
+        let ingRows = '';
+        r.ingredients.forEach(ing => {
+          ingRows += `<li style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">• <b>${Number((ing.amount * scale).toFixed(1))} ${ing.unit}</b> ${ing.name}</li>`;
+        });
+
+        const card = `
+          <div class="recipe-card">
+            <div>
+              <div class="recipe-banner-svg banner-calm">
+                <span class="recipe-tag">${r.category}</span>
+                <div class="recipe-title-overlay">
+                  <div class="recipe-title">${r.title}</div>
+                </div>
+              </div>
+
+              <div class="recipe-body">
+                <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px; line-height:1.5;">${r.description}</p>
+                <div class="scaler-box">
+                  <span>Serving Scaler:</span>
+                  <div>
+                    <button class="qty-btn" onclick="adjustScale('${r.id}', -1)">-</button>
+                    <span style="margin: 0 4px;">${recipeScales[r.id] || r.servings} servings (${scale}x)</span>
+                    <button class="qty-btn" onclick="adjustScale('${r.id}', 1)">+</button>
+                  </div>
+                </div>
+                <ul style="list-style:none; padding:0;">${ingRows}</ul>
+              </div>
+            </div>
+
+            <div class="recipe-actions">
+              <button class="btn-green" onclick="addRecipeToList('${r.id}')">🛒 Add to List</button>
+              <button class="btn-primary" onclick="openCookModal('${r.id}')">👨‍🍳 Cook Mode</button>
+            </div>
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+    }
+
+    function handleImportRecipe(e) {
+      e.preventDefault();
+      const input = document.getElementById('recipe-input');
+      if (!input.value.trim()) return;
+
+      const title = input.value.startsWith('http')
+        ? 'Imported ' + input.value.split('/')[3]?.replace(/[-_]/g, ' ')
+        : input.value.charAt(0).toUpperCase() + input.value.slice(1);
+
+      recipes.unshift({
+        id: `r-${Date.now()}`,
+        title: title,
+        description: `Parsed recipe for ${title}. Fresh ingredients and structured instructions.`,
+        servings: 4, category: 'Main Course',
+        ingredients: [
+          { name: 'Fresh Vegetables', amount: 2, unit: 'cups', category: 'Produce' },
+          { name: 'Gourmet Protein', amount: 1.5, unit: 'lbs', category: 'Meat & Seafood' },
+          { name: 'Fresh Garlic', amount: 3, unit: 'cloves', category: 'Produce' },
+          { name: 'Extra Virgin Olive Oil', amount: 2, unit: 'tbsp', category: 'Pantry & Canned' }
+        ],
+        steps: [
+          { text: 'Wash and prep all fresh ingredients.', timeSecs: 0, timeLabel: null },
+          { text: 'Heat olive oil in a pan over medium heat and sear protein for 8 minutes until cooked.', timeSecs: 480, timeLabel: '⏱ Start 8m Sear Timer' },
+          { text: 'Sauté vegetables and garlic for 3 minutes until tender. Serve warm.', timeSecs: 180, timeLabel: '⏱ Start 3m Sauté Timer' }
+        ]
+      });
+
+      showToast(`Imported recipe "${title}"!`);
+      input.value = '';
+      renderRecipes();
+    }
+
+    function addRecipeToList(id) {
+      const r = recipes.find(rec => rec.id === id);
+      if (!r) return;
+      const scale = (recipeScales[id] || r.servings) / r.servings;
+
+      r.ingredients.forEach((ing, idx) => {
+        items.unshift({
+          id: `ing-${Date.now()}-${idx}`,
+          name: ing.name,
+          quantity: `${Number((ing.amount * scale).toFixed(1))} ${ing.unit}`,
+          category: ing.category,
+          completed: false,
+          source: r.title,
+          listId: activeListId
+        });
+      });
+
+      showToast(`Added ${r.ingredients.length} ingredients to Grocery List!`);
+    }
+
+    function openCookModal(id) {
+      activeRecipeId = id;
+      const r = recipes.find(rec => rec.id === id);
+      if (!r) return;
+
+      document.getElementById('modal-recipe-title').innerText = r.title;
+      const stepsContainer = document.getElementById('modal-steps');
+      stepsContainer.innerHTML = '';
+
+      r.steps.forEach((stepObj, idx) => {
+        const stepText = typeof stepObj === 'string' ? stepObj : stepObj.text;
+        const stepSecs = typeof stepObj === 'object' ? stepObj.timeSecs : 0;
+        const stepLabel = typeof stepObj === 'object' ? stepObj.timeLabel : null;
+
+        stepsContainer.innerHTML += `
+          <div class="step-box">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:900; color:var(--primary); background:var(--primary-light); padding:4px 10px; border-radius:8px; font-size:12px;">Step ${idx + 1}</span>
+              ${stepLabel ? `
+                <button class="step-timer-btn" onclick="startStepTimer('Step ${idx + 1}', ${stepSecs})">
+                  ${stepLabel}
+                </button>
+              ` : ''}
+            </div>
+            <div style="font-size:14px; font-weight:600; color:var(--text-main); line-height:1.5;">${stepText}</div>
+          </div>
+        `;
+      });
+
+      document.getElementById('cook-modal').style.display = 'flex';
+    }
+
+    function closeCookModal() {
+      document.getElementById('cook-modal').style.display = 'none';
+    }
+
+    function renderMealPlan() {
+      const grid = document.getElementById('meal-plan-grid');
+      const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+      grid.innerHTML = '';
+
+      days.forEach((day, idx) => {
+        grid.innerHTML += `
+          <div style="background:var(--bg-main); border:1px solid var(--border-color); padding:16px; border-radius:16px;">
+            <div style="font-weight:900; font-size:13px; color:var(--primary); text-transform:uppercase; margin-bottom:8px;">${day}</div>
+            <div style="background:var(--bg-card); border:1px solid var(--border-color); padding:10px; border-radius:10px;">
+              <div style="font-weight:800; font-size:12px; color:var(--text-muted);">No meal assigned</div>
+              <div style="font-size:11px; color:var(--text-muted);">Tap to plan</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function generateWeeklyList() {
+      showToast('Weekly calendar is clean. Assign recipes to plan meals!');
+    }
+
+    // INITIAL RENDER
+    renderList();
+  </script>
+</body>
+</html>

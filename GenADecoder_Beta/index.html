@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>GenADecoder | GenADecoder_Beta</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="GenADecoder" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://planexservices.github.io/GenADecoder_Beta/" />
+<meta property="og:url" content="https://planexservices.github.io/GenADecoder_Beta/" />
+<meta property="og:site_name" content="GenADecoder_Beta" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="GenADecoder" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","headline":"GenADecoder","name":"GenADecoder_Beta","url":"https://planexservices.github.io/GenADecoder_Beta/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/GenADecoder_Beta/assets/css/style.css?v=b6b65f45a334be117a538f1d3fe9a74a7d60d56c">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/GenADecoder_Beta/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://planexservices.github.io/GenADecoder_Beta/">GenADecoder_Beta</a></h1>
+      
+
+      <h1 id="genadecoder">GenADecoder</h1>
+
+<p>A free, no-login web app that helps parents and other adults decode current teen and kid slang — plus the other dialects of the internet. Built mobile-first: dark mode, bottom tab bar, card UI, so it feels like a native app in the browser.</p>
+
+<h2 id="features">Features</h2>
+
+<ul>
+  <li><strong>📖 Glossary</strong> — 670+ documented slang terms with full CRUD (no accounts). Instant client-side search, tap-to-expand cards, quick save, difficulty/age filters, A–Z jump rail, and a 🎲 “surprise me” button.</li>
+  <li><strong>🧭 Explore packs</strong> — seven “jargon worlds”:
+    <ul>
+      <li>🧃 Teen &amp; Gen Alpha slang (organized by age/grade group)</li>
+      <li>📱 Texting shorthand</li>
+      <li>🎮 Gaming slang</li>
+      <li>💻 Coding jargon</li>
+      <li>🏢 Corporate speak</li>
+      <li>⚠️ <strong>Red flags &amp; safety</strong> — coded terms that can signal risk (drugs, sextortion, hidden accounts), with parent-alert badges and a “conversation starters, not accusations” framing</li>
+      <li>🙂 <strong>Emoji codes</strong> — what that emoji actually means in a teen’s texts</li>
+    </ul>
+  </li>
+  <li><strong>🔗 Cross-category links</strong> — terms live in one place but appear in every pack they relate to (e.g. <em>sus</em> shows in teen, gaming, and texting), with “Lives in:” chips to hop between packs.</li>
+  <li><strong>🏠 Dashboard home</strong> — Slang of the Day, a “Do you speak teen?” quiz with parent ranks (Certified Rizzler → NPC Energy), stat tiles, and charts.</li>
+  <li><strong>🔥 Trending, verified</strong> — we never invent what’s hot (see below).</li>
+  <li><strong>🔖 Saved &amp; notes</strong> — bookmarks and private notes stored in <code class="language-plaintext highlighter-rouge">localStorage</code> on your browser only.</li>
+</ul>
+
+<h2 id="daily-verification--one-process-two-checks">Daily verification — one process, two checks</h2>
+
+<p>Once per calendar day (America/New_York), on first visit — or on demand via the “🛡️ Verify now” button — the server runs a single unified process (<code class="language-plaintext highlighter-rouge">GET /api/verify</code>):</p>
+
+<ol>
+  <li><strong>News check:</strong> reads Google News RSS (teen/Gen Alpha slang + Word-of-the-Year coverage) and Merriam-Webster’s Word of the Day feed, then flags glossary terms that actually appear in headlines (word-boundary matching; ambiguous everyday words excluded). Official Words of the Year stay flagged even on quiet days. Each trending term shows its headline evidence.</li>
+  <li><strong>Slang radar:</strong> re-scans Bark’s and Axis’s parent slang guides and diffs every bolded term against the library. New terms surface as <em>review candidates</em> — definitions are never auto-written.</li>
+</ol>
+
+<p>Both halves fail independently; a failed source keeps its previous results. The Trending page shows verification times, per-source status, headlines used, and Wiktionary spot-checks.</p>
+
+<h2 id="sourcing-policy">Sourcing policy</h2>
+
+<p>Every seeded term cites a published source: Bark’s 2026 parent guides, Axis’s 2026 slang guide, Merriam-Webster Slang, Dictionary.com/Oxford Word of the Year coverage, Wiktionary (titles verified via the MediaWiki API), and Wikipedia. No invented meanings — terms without a verifiable source are omitted.</p>
+
+<h2 id="stack">Stack</h2>
+
+<p>Next.js 16 (App Router) · React 19 · SQLite (better-sqlite3) · Drizzle ORM schema · plain CSS design tokens (no CSS framework)</p>
+
+<h2 id="getting-started">Getting started</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install
+</span>npm run build
+npm start        <span class="c"># binds 0.0.0.0:3000</span>
+</code></pre></div></div>
+
+<p>Dev mode: <code class="language-plaintext highlighter-rouge">npm run dev</code></p>
+
+<p>The SQLite database is created and seeded automatically on the first request (or hit <code class="language-plaintext highlighter-rouge">GET /api/health</code> to trigger it). Set <code class="language-plaintext highlighter-rouge">GENA_DB_PATH</code> to relocate the database file; it defaults to <code class="language-plaintext highlighter-rouge">data/genadecoder.db</code>.</p>
+
+<h2 id="api">API</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Route</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>GET</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/terms?q=&amp;ageGroup=&amp;trending=1&amp;category=</code></td>
+      <td>Search / filter terms (category matches home pack + cross-links)</td>
+    </tr>
+    <tr>
+      <td>POST</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/terms</code></td>
+      <td>Create a term (validated)</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/terms/:id</code></td>
+      <td>Read one term</td>
+    </tr>
+    <tr>
+      <td>PUT</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/terms/:id</code></td>
+      <td>Update a term</td>
+    </tr>
+    <tr>
+      <td>DELETE</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/terms/:id</code></td>
+      <td>Delete a term</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/verify</code></td>
+      <td>Unified daily verification (<code class="language-plaintext highlighter-rouge">?force=1</code> to run on demand)</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/trending</code></td>
+      <td>News-feed trending check only</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/radar</code></td>
+      <td>Bark/Axis slang radar only</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/stats</code></td>
+      <td>Dashboard stats</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/quiz</code></td>
+      <td>Random quiz question (real definitions as decoys)</td>
+    </tr>
+    <tr>
+      <td>GET</td>
+      <td><code class="language-plaintext highlighter-rouge">/api/health</code></td>
+      <td>Seed + counts</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="project-layout">Project layout</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>app/                  # Next.js App Router pages + API routes
+  page.js             # Dashboard (home)
+  glossary/           # Teen slang browser
+  explore/            # Pack hub + /explore/[pack]
+  term/[id]/          # Term detail + edit
+  trending/           # Trending + unified verification panel
+  saved/              # localStorage bookmarks &amp; notes
+  add/                # Create form
+  api/                # terms CRUD, verify, trending, radar, stats, quiz, health
+components/           # TabBar, TermBrowser, TermCard, TermForm, AppHeader
+lib/
+  db.js               # SQLite init, migrations, idempotent seeding (v1–v6)
+  schema.js           # Drizzle ORM schema
+  seed-terms.json     # 130 original teen terms (parsed from cited glossary)
+  packs*.js           # Pack seed data (all cited) + cross-link table
+  trending.js         # News-feed verification
+  radar.js            # Bark/Axis guide scanner
+  validate.js         # Server-side input validation
+  constants.js        # Age groups &amp; difficulties
+  local.js            # localStorage helpers (saved terms, notes)
+</code></pre></div></div>
+
+<h2 id="notes">Notes</h2>
+
+<ul>
+  <li>Seeding is idempotent: each expansion wave is guarded by a meta flag and a dedupe check, so restarts and fresh clones never double-insert. When a seed term already exists in another pack, it gets cross-linked instead of duplicated.</li>
+  <li>The original spec listed PostgreSQL; this build uses SQLite for zero-config setup. The Drizzle schema in <code class="language-plaintext highlighter-rouge">lib/schema.js</code> maps 1:1 if you want to migrate.</li>
+</ul>
+
+
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>

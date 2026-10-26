@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Security Policy — DelQuro - Bravo | delquro-bravo</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Security Policy — DelQuro - Bravo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="C:\Users\plane\delquro-bravo" />
+<meta property="og:description" content="C:\Users\plane\delquro-bravo" />
+<link rel="canonical" href="https://planexservices.github.io/delquro-bravo/SECURITY.html" />
+<meta property="og:url" content="https://planexservices.github.io/delquro-bravo/SECURITY.html" />
+<meta property="og:site_name" content="delquro-bravo" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Security Policy — DelQuro - Bravo" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"C:\\Users\\plane\\delquro-bravo","headline":"Security Policy — DelQuro - Bravo","url":"https://planexservices.github.io/delquro-bravo/SECURITY.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/delquro-bravo/assets/css/style.css?v=3c259f9d3464816b3a3dddfa5123fae33a5162ce">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/delquro-bravo/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="https://planexservices.github.io/delquro-bravo/">delquro-bravo</a></h1>
+      
+
+      <h1 id="security-policy--delquro---bravo">Security Policy — DelQuro - Bravo</h1>
+
+<h2 id="reporting-a-vulnerability">Reporting a Vulnerability</h2>
+
+<p>If you discover a security vulnerability in DelQuro - Bravo, please report it privately via email to <code class="language-plaintext highlighter-rouge">security@delquro.app</code> or open a confidential advisory on GitHub.</p>
+
+<h2 id="supported-versions">Supported Versions</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Supported</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>v1.0.x</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="0-security-controls">$0 Security Controls</h2>
+
+<ul>
+  <li>Runtime security headers (<code class="language-plaintext highlighter-rouge">X-Frame-Options</code>, <code class="language-plaintext highlighter-rouge">X-Content-Type-Options</code>, CSP) in <code class="language-plaintext highlighter-rouge">src/middleware.ts</code>.</li>
+  <li>Strict Zod validation on every API endpoint.</li>
+  <li>Parameterized SQLite queries via <code class="language-plaintext highlighter-rouge">better-sqlite3</code>.</li>
+  <li>SSRF allowlist protection via <code class="language-plaintext highlighter-rouge">isSafeUrl()</code>.</li>
+</ul>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/PlanExServices/delquro-bravo/edit/main/SECURITY.md">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>
